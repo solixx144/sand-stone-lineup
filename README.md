@@ -15,3 +15,5 @@ Tanıtım için üst kısımda Instagram hesabım yer alıyor:
 @solixx144
 
 GitHub Pages üzerinden yayında.
+
+Diğer mapleri bitirdikten sonra projeyi mobil uygulamaya çevirmeyi planlıyorum.
