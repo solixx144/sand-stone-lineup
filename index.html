@@ -4,7 +4,117 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sand Stone Lineup</title>
-<link rel="stylesheet" href="style.css">
+<style>
+/* Genel */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #000;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #222, #111);
+  color: #fff;
+  border-bottom: 2px solid #444;
+}
+.map-container {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+.map-container img.map {
+  width: 100%;
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+/* Noktalar */
+.point {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: red;
+  animation: pulse 1.6s ease-in-out infinite alternate, glow 2s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(255,0,0,0.6),0 0 16px rgba(255,0,0,0.4),0 0 24px rgba(255,0,0,0.2);
+}
+.point:hover {
+  box-shadow: 0 0 16px rgba(255,0,0,0.8),0 0 24px rgba(255,0,0,0.6),0 0 32px rgba(255,0,0,0.4);
+  transform: scale(1.15);
+}
+/* Animasyonlar */
+@keyframes pulse { from { transform: translateY(-2px); } to { transform: translateY(3px); } }
+@keyframes glow {
+  0% { box-shadow:0 0 8px rgba(255,0,0,0.6),0 0 16px rgba(255,0,0,0.4),0 0 24px rgba(255,0,0,0.2);}
+  50% { box-shadow:0 0 12px rgba(255,0,0,0.8),0 0 20px rgba(255,0,0,0.5),0 0 28px rgba(255,0,0,0.3);}
+  100% { box-shadow:0 0 8px rgba(255,0,0,0.6),0 0 16px rgba(255,0,0,0.4),0 0 24px rgba(255,0,0,0.2);}
+}
+/* Popup */
+.popup, .tutorial {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(20,20,20,0.95);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  z-index: 400;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.popup.show, .tutorial.show { display: block; transform: translate(-50%, -50%) scale(1); opacity: 1; }
+.popup-card, .tutorial-card { width: 250px; }
+.popup-header { display: flex; justify-content: space-between; align-items: center; color: white; margin-bottom: 10px; }
+.popup-close { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; transition: color 0.2s ease; }
+.popup-close:hover { color: red; }
+/* Grenade Butonlar */
+.grenade-btn {
+  padding: 12px;
+  width: 100%;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255,0,0,0.4);
+  transition: all 0.25s ease;
+}
+.grenade-btn:hover {
+  background: linear-gradient(135deg,#ff1a1a,#ff4d4d);
+  transform: scale(1.1);
+  box-shadow:0 6px 18px rgba(255,0,0,0.6);
+}
+/* Mini Tooltip */
+.mini-tooltip {
+  position: absolute;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -120%) scale(0.8);
+  transition: all 0.3s ease;
+  z-index: 500;
+}
+.mini-tooltip.show { opacity: 1; transform: translate(-50%, -140%) scale(1); }
+/* Responsive */
+@media (max-width: 768px) { .popup-card, .tutorial-card { width: 80vw; } }
+@media (max-width: 480px) { header{flex-direction:column;align-items:flex-start;} .map-container{width:95%;} .popup-card, .tutorial-card{width:90vw;} }
+</style>
 </head>
 <body>
 
@@ -22,7 +132,6 @@
   </div>
 </main>
 
-<!-- Popup -->
 <div class="popup" id="popup">
   <div class="popup-card">
     <div class="popup-header">
@@ -33,7 +142,6 @@
   </div>
 </div>
 
-<!-- Tutorial -->
 <div class="tutorial" id="tutorial">
   <div class="tutorial-card">
     <h3 id="tutorialTitle">Nasıl Kullanılır?</h3>
@@ -42,6 +150,63 @@
   </div>
 </div>
 
-<script src="app.js"></script>
+<script>
+// Noktalar ve popup
+const points = document.querySelectorAll(".point");
+const popup = document.getElementById("popup");
+const popupTitle = document.getElementById("popupTitle");
+const popupBody = document.getElementById("popupBody");
+const closeBtn = document.getElementById("closeBtn");
+const tutorial = document.getElementById("tutorial");
+const closeTutorialBtn = document.getElementById("closeTutorialBtn");
+
+// Dil sistemi (TR sabit)
+function translatePoint(name){ return name; }
+function translateGrenade(type){ return type.charAt(0).toUpperCase()+type.slice(1); }
+function translateText(txt){ return txt; }
+
+// Noktaya tıklama
+points.forEach(point=>{
+  point.addEventListener("click",(e)=>{
+    const area = point.dataset.name;
+    popupTitle.textContent = translatePoint(area);
+    popupBody.innerHTML="";
+    ["smoke","flash","molly"].forEach(type=>{
+      const btn=document.createElement("button");
+      btn.className="grenade-btn";
+      btn.dataset.type=type;
+      btn.textContent=translateGrenade(type);
+      btn.onclick=()=>alert(translateText("Yakında video eklenecek"));
+      popupBody.appendChild(btn);
+    });
+    popup.classList.add("show");
+    // Soft shake
+    popup.classList.add("shake");
+    setTimeout(()=>popup.classList.remove("shake"),300);
+    // Mini-tooltip
+    let tooltip=document.createElement("div");
+    tooltip.className="mini-tooltip show";
+    tooltip.textContent=translatePoint(area);
+    document.body.appendChild(tooltip);
+    const rect = point.getBoundingClientRect();
+    tooltip.style.left = rect.left + rect.width/2 + "px";
+    tooltip.style.top = rect.top + "px";
+    setTimeout(()=>{tooltip.classList.remove("show"); setTimeout(()=>tooltip.remove(),300);},1500);
+  });
+});
+
+// Popup kapatma
+closeBtn.addEventListener("click",()=>{ popup.classList.remove("show"); });
+
+// Tutorial
+function showTutorial(){
+  tutorial.querySelector("#tutorialTitle").textContent=translateText("Nasıl Kullanılır?");
+  tutorial.querySelector("#tutorialText").textContent=translateText("Kırmızı noktalara tıkla → Grenade seç → Popup açılacak");
+  tutorial.classList.add("show");
+}
+closeTutorialBtn.addEventListener("click",()=>{ tutorial.classList.remove("show"); });
+window.addEventListener("load",()=>showTutorial());
+</script>
+
 </body>
 </html>
