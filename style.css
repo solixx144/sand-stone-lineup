@@ -1,17 +1,41 @@
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial, sans-serif;background:#fff}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;color:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:#000}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;color:#fff;position:relative;z-index:5}
 .map-container{position:relative;width:90%;max-width:800px;margin:20px auto}
 .map{width:100%;border-radius:10px}
-.point{position:absolute;width:16px;height:16px;background:red;border-radius:50%;cursor:pointer;animation:float 1.6s ease-in-out infinite alternate,glow 2s ease-in-out infinite}
-@keyframes float{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
-@keyframes glow{0%{box-shadow:0 0 8px red}50%{box-shadow:0 0 18px red}100%{box-shadow:0 0 8px red}}
+
+/* NOKTALAR */
+.point{position:absolute;width:16px;height:16px;border-radius:50%;cursor:pointer;animation:float 1.6s ease-in-out infinite alternate,glow 2s ease-in-out infinite;}
+.point.flash{background:white;border:2px dashed #ccc;}
+.point.molly{background:red;border:2px solid orange;}
+.point.smoke{background:grey;border:2px solid #999;}
+.point.grenade{background:#9dbb6c;border:2px solid #556b2f;}
+@keyframes float{0%{transform:translateY(-3px)}100%{transform:translateY(3px)}}
+@keyframes glow{0%{box-shadow:0 0 6px}50%{box-shadow:0 0 14px}100%{box-shadow:0 0 6px}}
+
+/* POPUP */
 .popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;color:#fff;padding:20px;border-radius:12px;z-index:10}
 .popup.show{display:block}
 .popup-header{display:flex;justify-content:space-between;align-items:center}
-.grenade-btn{width:100%;padding:10px;margin-top:8px;border:none;border-radius:8px;background:#ff2d2d;color:white;cursor:pointer}
+
+/* MENU */
 .menu{display:none;position:fixed;top:60px;right:20px;background:#111;color:white;padding:15px;border-radius:10px;z-index:20}
 .menu.show{display:block}
-.mapBtn,.closeMenu{width:100%;margin-top:6px;padding:8px;border:none;border-radius:6px;cursor:pointer}
+.mapBtn,.closeMenu,.themeBtn{width:100%;margin-top:6px;padding:8px;border:none;border-radius:6px;cursor:pointer}
+
+/* TUTORIAL */
 .tutorial{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#eee;padding:20px;border-radius:12px}
 .tutorial.show{display:block}
+
+/* TEMALAR */
+body.light{background:#fff;color:#000} body.light header{background:#111;color:#fff}
+body.dark{background:#111;color:#eee} body.dark header{background:#222;color:#fff}
+body.red{background:#330000;color:#fff} body.red header{background:#660000;color:#fff}
+body.blue{background:#001133;color:#fff} body.blue header{background:#004488;color:#fff}
+body.green{background:#113300;color:#fff} body.green header{background:#446600;color:#fff}
+
+/* SABİT REKLAM */
+.ad-banner{position:fixed;top:50%;transform:translateY(-50%);background:yellow;color:black;font-weight:bold;padding:15px;text-decoration:none;z-index:50}
+.ad-banner.left{left:0;border-radius:0 10px 10px 0;}
+.ad-banner.right{right:0;border-radius:10px 0 0 10px;}
+@media(max-width:768px){.ad-banner{padding:10px;font-size:14px}}
