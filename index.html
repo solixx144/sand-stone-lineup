@@ -4,56 +4,47 @@
   <meta charset="UTF-8">
   <title>Sand Stone Lineup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- CSS BAĞLANTISI -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ÜST BAR -->
-  <header class="top-bar">
-    <h1>Sand Stone Lineup</h1>
+<header class="top-bar">
+  <h1>Sand Stone Lineup</h1>
+</header>
 
-    <select id="languageSelect">
-      <option value="tr">TR</option>
-      <option value="en">EN</option>
-      <option value="ru">RU</option>
-    </select>
-  </header>
+<main>
+  <div class="map-container">
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10"
+      class="map"
+      alt="Mini Map"
+    >
 
-  <!-- MİNİ MAP -->
-  <main>
-    <div class="map-container">
-      <!-- BURADA MAP RESMİ -->
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10"
-        alt="Mini Map"
-        class="map"
-      >
-
-      <!-- KIRMIZI NOKTALAR -->
-      <div class="point" data-name="A Site" style="top:38%; left:28%;"></div>
-      <div class="point" data-name="B Site" style="top:60%; left:72%;"></div>
-      <div class="point" data-name="Market" style="top:50%; left:48%;"></div>
-    </div>
-  </main>
-
-  <!-- POPUP -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <h2 id="popupTitle">Başlık</h2>
-
-      <div class="grenades">
-        <button id="smokeBtn">💨 Smoke</button>
-        <button id="flashBtn">⚡ Flash</button>
-        <button id="mollyBtn">🔥 Molly</button>
-      </div>
-
-      <button class="close-btn" onclick="closePopup()">✕ Kapat</button>
-    </div>
+    <!-- DOĞRU NOKTALAR -->
+    <div class="point" data-name="A Site" style="top:38%; left:28%;"></div>
+    <div class="point" data-name="B Site" style="top:60%; left:72%;"></div>
+    <div class="point" data-name="Market" style="top:50%; left:48%;"></div>
   </div>
+</main>
 
-  <!-- JS BAĞLANTISI (ÇOK ÖNEMLİ: EN ALTTA) -->
-  <script src="app.js"></script>
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+
+    <div class="popup-header">
+      <span id="popupTitle">Market</span>
+      <button class="popup-close" id="closePopup">✕</button>
+    </div>
+
+    <div class="popup-body">
+      <button class="grenade smoke">💨 Smoke</button>
+      <button class="grenade flash">⚡ Flash</button>
+      <button class="grenade molly">🔥 Molly</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
