@@ -1,56 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Sand Stone Lineup</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sand Stone Lineup</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="top-bar">
+<header>
   <h1>Sand Stone Lineup</h1>
-
-  <div class="tabs">
-    <button class="tab active" data-type="smoke">💣 Smoke</button>
-    <button class="tab" data-type="flash">⚡ Flash</button>
-    <button class="tab" data-type="molly">🔥 Molly</button>
-  </div>
+  <button id="settingsBtn">☰</button>
 </header>
 
 <main>
   <div class="map-container">
-    <img
-      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10"
-      class="map"
-      alt="Mini Map"
-    >
-
-    <!-- SMOKE -->
-    <div class="point smoke" data-name="A Site Smoke" style="top:38%; left:28%;"></div>
-    <div class="point smoke" data-name="Market Smoke" style="top:50%; left:48%;"></div>
-
-    <!-- FLASH -->
-    <div class="point flash" data-name="B Site Flash" style="top:60%; left:72%;"></div>
-
-    <!-- MOLLY -->
-    <div class="point molly" data-name="Mid Molly" style="top:25%; left:55%;"></div>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10" class="map">
+    <div class="point" data-name="Market" style="left:58%;top:62%"></div>
+    <div class="point" data-name="A Site" style="left:25%;top:40%"></div>
+    <div class="point" data-name="B Site" style="left:78%;top:35%"></div>
   </div>
 </main>
 
-<!-- POPUP -->
+<!-- Popup -->
 <div class="popup" id="popup">
   <div class="popup-card">
-
     <div class="popup-header">
-      <span id="popupTitle">Lineup</span>
-      <button class="popup-close" id="closePopup">✕</button>
+      <span id="popupTitle">Market</span>
+      <button class="popup-close" id="closeBtn">×</button>
     </div>
+    <div id="popupBody"></div>
+  </div>
+</div>
 
-    <div class="popup-body">
-      <p>Yakında video eklenecek</p>
-    </div>
-
+<!-- Tutorial -->
+<div class="tutorial" id="tutorial">
+  <div class="tutorial-card">
+    <h3 id="tutorialTitle">Nasıl Kullanılır?</h3>
+    <p id="tutorialText">Kırmızı noktalara tıkla → Grenade seç → Popup açılacak</p>
+    <button id="closeTutorialBtn">Tamam</button>
   </div>
 </div>
 
