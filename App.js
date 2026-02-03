@@ -1,3 +1,5 @@
+alert("JS ÇALIŞIYOR");
+
 let currentArea = "market";
 let currentLang = "tr";
 
