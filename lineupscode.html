@@ -5,56 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sand Stone Mini Oyun</title>
 <style>
-* { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', sans-serif; }
-body { background:#121212; color:#fff; display:flex; flex-direction:column; min-height:100vh; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Arial, sans-serif; background:#fff; color:#000; display:flex; flex-direction:column; min-height:100vh; }
 
-header { display:flex; justify-content:space-between; align-items:center; background:#1f1f1f; padding:15px 25px; box-shadow:0 4px 10px rgba(0,0,0,0.5);}
-header h1 { font-size:1.6rem; cursor:pointer; color:#f1c40f; text-shadow: 1px 1px 3px #000; }
-header button { font-size:1rem; cursor:pointer; padding:8px 15px; border:none; border-radius:8px; background:#f39c12; color:#000; transition:0.3s; }
-header button:hover { background:#f1c40f; }
+header { display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff; padding:10px 20px; flex-shrink:0; }
+header h1 { font-size:1.3rem; cursor:pointer; }
+header button { font-size:1rem; cursor:pointer; padding:5px 10px; }
 
 main { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; }
 
-#miniMapContainer { position:relative; display:inline-block; }
-#miniMap { width:90%; max-width:800px; display:block; border-radius:15px; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+#miniMapContainer { position:relative; display:inline-block; margin-bottom:10px; }
+#miniMap { width:90%; max-width:800px; display:block; border:2px solid #000; border-radius:10px; cursor:pointer; }
 
-#miniAd { position:absolute; top:5px; left:50%; transform:translateX(-50%); background:rgba(255,255,0,0.85); padding:6px 12px; border-radius:5px; font-weight:bold; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.4); transition:0.3s;}
-#miniAd:hover { background:rgba(255,255,0,1); }
+#miniAd { position:absolute; top:5px; left:50%; transform:translateX(-50%); background:rgba(255,255,0,0.8); padding:5px 10px; border:1px solid #000; cursor:pointer; font-weight:bold; }
 
-/* Animasyonlu noktalar */
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow:0 0 8px rgba(255,0,0,0.8);}
-    50% { transform: scale(1.5); box-shadow:0 0 15px rgba(255,0,0,1);}
-    100% { transform: scale(1); box-shadow:0 0 8px rgba(255,0,0,0.8);}
-}
+#reportError, #adminLoginBtn { margin-top:10px; padding:5px 10px; cursor:pointer; }
 
-.spot {
-    position:absolute;
-    width:15px;
-    height:15px;
-    background:red;
-    border-radius:50%;
-    cursor:pointer;
-    box-shadow:0 0 8px rgba(255,0,0,0.8);
-    animation: pulse 1.5s infinite;
-    transition:0.2s;
-}
-.spot:hover { transform: scale(1.8); box-shadow:0 0 20px rgba(255,0,0,1); }
+#settingsPopup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:2px solid #000; padding:20px; z-index:50; }
+#settingsPopup button { margin:5px; cursor:pointer; }
 
-/* Ayarlar Popup */
-#settingsPopup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#222; border-radius:12px; padding:25px; z-index:50; box-shadow:0 0 25px rgba(0,0,0,0.7); }
-#settingsPopup button { margin:5px; cursor:pointer; padding:8px 12px; border:none; border-radius:8px; transition:0.3s; }
-#settingsPopup button:hover { opacity:0.8; }
+.tutorial { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#f2f2f2; border:2px solid #000; padding:20px; z-index:60; display:none; }
+.tutorial button { margin:5px; }
 
-/* Tutorial */
-.tutorial { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#2c2c2c; border-radius:12px; padding:25px; z-index:60; display:none; box-shadow:0 0 25px rgba(0,0,0,0.7);}
-.tutorial button { margin:5px; padding:8px 12px; border:none; border-radius:8px; background:#f39c12; cursor:pointer; transition:0.3s;}
-.tutorial button:hover { background:#f1c40f; }
-
-/* Responsive */
-@media(max-width:768px){ header h1{font-size:1.2rem;} header button{font-size:0.9rem;} }
+@media(max-width:768px){ header h1{font-size:1rem;} header button{font-size:0.9rem;} }
 @media(max-width:480px){ header{flex-direction:column;align-items:flex-start;} header h1{margin-bottom:5px;} }
-
 </style>
 </head>
 <body>
@@ -68,20 +42,19 @@ main { flex:1; display:flex; flex-direction:column; justify-content:center; alig
     <div id="miniMapContainer">
         <img id="miniMap" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
         <div id="miniAd">REKLAM</div>
-        <!-- Noktalar JS ile eklenecek -->
     </div>
+    <button id="reportError">Hata Bildir</button>
+    <button id="adminLoginBtn">Admin Girişi</button>
 </main>
 
-<!-- Tutorial -->
 <div class="tutorial" id="tutorial">
     <h2>Nasıl Oynanır?</h2>
-    <p>Mini map üzerindeki kırmızı noktalar interaktif, tıklayınca link/video açılır.</p>
-    <p>Fotoğrafın diğer alanına tıklayınca ana reklam linki açılır.</p>
+    <p>Mini map üzerindeki noktalara tıklayınca farklı linkler açılacak.</p>
+    <p>Mini map üzerindeki boş alan veya reklam tıklanınca ana link açılacak.</p>
     <p>Sol üstten ayarlara girip tema değiştirebilirsiniz.</p>
     <button id="closeTutorial">Tamam</button>
 </div>
 
-<!-- Ayarlar Popup -->
 <div id="settingsPopup">
     <h2>Ayarlar & Haritalar</h2>
     <p>Tema Seçimi:</p>
@@ -96,87 +69,120 @@ main { flex:1; display:flex; flex-direction:column; justify-content:center; alig
     <button class="mapBtn">Province</button>
     <button class="mapBtn">Breeze</button>
     <br><br>
-    <button id="reportError">Hata Bildir</button>
-    <br><br>
     <button id="closeSettings">Kapat</button>
 </div>
 
 <script>
 // Tutorial
 const tutorial = document.getElementById('tutorial');
-const closeTutorial = document.getElementById('closeTutorial');
 tutorial.style.display='block';
-closeTutorial.addEventListener('click',()=>tutorial.style.display='none');
+document.getElementById('closeTutorial').addEventListener('click',()=>tutorial.style.display='none');
 
 // Mini map ve reklam
 const miniMap = document.getElementById('miniMap');
-const miniMapContainer = document.getElementById('miniMapContainer');
 const miniAd = document.getElementById('miniAd');
-
-// Interaktif noktalar (x,y 0-1 oran, link)
-const mapSpots = [
+const reportError = document.getElementById('reportError');
+let mapSpots = JSON.parse(localStorage.getItem('mapSpots')) || [
     {x:0.2, y:0.3, link:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
     {x:0.5, y:0.5, link:'https://www.tiktok.com/@solixx144'},
     {x:0.7, y:0.2, link:'https://www.example.com'}
 ];
 
-// Noktaları oluştur
-mapSpots.forEach(spot=>{
-    const dot = document.createElement('div');
-    dot.classList.add('spot');
-    dot.style.left = `calc(${spot.x*100}% - 7.5px)`; 
-    dot.style.top = `calc(${spot.y*100}% - 7.5px)`;
-    dot.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        window.open(spot.link,'_blank');
+// Tıklama kontrolü
+miniMap.addEventListener('click', (e) => {
+    const rect = miniMap.getBoundingClientRect();
+    const clickX = (e.clientX - rect.left) / rect.width;
+    const clickY = (e.clientY - rect.top) / rect.height;
+
+    let clickedSpot = false;
+    mapSpots.forEach(spot => {
+        const radius = 0.05;
+        if(Math.abs(clickX - spot.x) < radius && Math.abs(clickY - spot.y) < radius){
+            window.open(spot.link,'_blank');
+            clickedSpot = true;
+        }
     });
-    miniMapContainer.appendChild(dot);
+
+    if(!clickedSpot) window.open('https://www.tiktok.com/@solixx144','_blank');
 });
 
-// Fotoğraf tıklayınca ana reklam linki
-miniMap.addEventListener('click',()=>window.open('https://www.tiktok.com/@solixx144','_blank'));
-
-// Mini map üstü reklam tıklaması
 miniAd.addEventListener('click',()=>window.open('https://www.tiktok.com/@solixx144','_blank'));
+reportError.addEventListener('click',()=>{
+    window.open('https://www.tiktok.com/@solixx144','_blank');
+    alert("Hata bildirmek için TikTok DM atabilirsiniz!");
+});
 
-// Sand Stone başlığı tıklayınca scroll
-const sandStoneTitle = document.getElementById('sandStoneTitle');
-sandStoneTitle.addEventListener('click',()=>miniMap.scrollIntoView({behavior:'smooth', block:'center'}));
+document.getElementById('sandStoneTitle').addEventListener('click',()=>miniMap.scrollIntoView({behavior:'smooth', block:'center'}));
 
-// Ayarlar
+// Ayarlar paneli
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsPopup = document.getElementById('settingsPopup');
-const closeSettings = document.getElementById('closeSettings');
-const themeLight = document.getElementById('themeLight');
-const themeDark = document.getElementById('themeDark');
-const reportError = document.getElementById('reportError');
-
 settingsBtn.addEventListener('click',()=>settingsPopup.style.display='block');
-closeSettings.addEventListener('click',()=>settingsPopup.style.display='none');
+document.getElementById('closeSettings').addEventListener('click',()=>settingsPopup.style.display='none');
 
-themeLight.addEventListener('click',()=>{
+// Tema
+document.getElementById('themeLight').addEventListener('click',()=>{
     document.body.style.backgroundColor='#fff';
     document.body.style.color='#000';
     settingsPopup.style.backgroundColor='#fff';
     settingsPopup.style.color='#000';
 });
-themeDark.addEventListener('click',()=>{
-    document.body.style.backgroundColor='#121212';
+document.getElementById('themeDark').addEventListener('click',()=>{
+    document.body.style.backgroundColor='#222';
     document.body.style.color='#fff';
-    settingsPopup.style.backgroundColor='#222';
+    settingsPopup.style.backgroundColor='#333';
     settingsPopup.style.color='#fff';
 });
 
-// Haritalar menüsü (Yakında)
+// Haritalar menüsü (şimdilik Yakında)
 document.querySelectorAll('.mapBtn').forEach(btn=>{
     btn.addEventListener('click',()=>{ alert('Yakında Gelecek 🚀'); });
 });
 
-// Hata bildir
-reportError.addEventListener('click',()=>{
-    window.open('https://www.tiktok.com/@solixx144','_blank');
-    alert("Hata bildirmek için TikTok DM atabilirsiniz!");
+// Admin mod
+let adminMode = false;
+document.getElementById('adminLoginBtn').addEventListener('click', ()=>{
+    const pwd = prompt("Admin şifresini gir:");
+    if(pwd === "solixx123"){
+        adminMode = true;
+        alert("Admin modu açıldı! Artık noktalar ekleyebilirsiniz.");
+        showAdminPanel();
+    } else {
+        alert("Yanlış şifre!");
+    }
 });
+
+function showAdminPanel(){
+    const panel = document.createElement('div');
+    panel.style.position='fixed';
+    panel.style.bottom='10px';
+    panel.style.right='10px';
+    panel.style.background='rgba(0,0,0,0.8)';
+    panel.style.color='#fff';
+    panel.style.padding='10px';
+    panel.style.zIndex='100';
+    panel.innerHTML = `
+        <h4>Yeni Nokta Ekle</h4>
+        X (0-1): <input type="number" id="newX" step="0.01" min="0" max="1"><br>
+        Y (0-1): <input type="number" id="newY" step="0.01" min="0" max="1"><br>
+        Link: <input type="text" id="newLink"><br>
+        <button id="addSpot">Ekle</button>
+    `;
+    document.body.appendChild(panel);
+
+    document.getElementById('addSpot').addEventListener('click', ()=>{
+        const x = parseFloat(document.getElementById('newX').value);
+        const y = parseFloat(document.getElementById('newY').value);
+        const link = document.getElementById('newLink').value;
+        if(!isNaN(x) && !isNaN(y) && link){
+            mapSpots.push({x,y,link});
+            localStorage.setItem('mapSpots', JSON.stringify(mapSpots));
+            alert("Yeni nokta eklendi ve kaydedildi!");
+        } else {
+            alert("Lütfen geçerli değerler girin.");
+        }
+    });
+}
 </script>
 
 </body>
