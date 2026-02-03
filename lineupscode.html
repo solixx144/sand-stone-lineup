@@ -18,7 +18,7 @@ nav div{padding:12px;border-top:1px solid #333;cursor:pointer}
 main{padding:15px;text-align:center}
 .map-container{position:relative;max-width:800px;margin:auto}
 .map{width:100%;border-radius:10px;border:2px solid #000}
-.red-dot{position:absolute;width:14px;height:14px;background:red;border-radius:50%;border:2px solid white;transform:translate(-50%,-50%);cursor:pointer}
+.red-dot{position:absolute;width:20px;height:20px;background:red;border-radius:50%;border:2px solid white;transform:translate(-50%,-50%);text-align:center;color:white;font-weight:bold;line-height:18px;cursor:pointer}
 #grenadeMenu{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:15px;border-radius:10px;z-index:300}
 #grenadeMenu h3{color:white;text-align:center;margin-bottom:8px}
 #grenadeMenu button{width:100%;margin:5px 0;padding:8px;background:#222;color:white;border:none;border-radius:6px;cursor:pointer}
@@ -26,7 +26,7 @@ main{padding:15px;text-align:center}
 #videoPopup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:black;padding:10px;border-radius:10px;z-index:400}
 #videoPopup iframe{width:320px;height:180px}
 #videoPopup button{width:100%;margin-top:6px}
-#settingsPopup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border-radius:10px;z-index:300}
+#settingsPopup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border-radius:10px;z-index:300;color:#000}
 #tutorial{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#f2f2f2;padding:20px;border-radius:10px;z-index:500;color:#000}
 </style>
 </head>
@@ -60,14 +60,15 @@ main{padding:15px;text-align:center}
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10" class="map">
 
 <!-- Mini map noktaları -->
-<div class="red-dot" id="marketDot" style="left:58%;top:62%"></div>
-<div class="red-dot" id="aSiteDot" style="left:25%;top:40%"></div>
-<div class="red-dot" id="bSiteDot" style="left:78%;top:35%"></div>
+<div class="red-dot" id="marketDot" style="left:55%;top:60%">X</div> 
+<div class="red-dot" id="aSiteDot" style="left:22%;top:38%">X</div> 
+<div class="red-dot" id="bSiteDot" style="left:78%;top:33%">X</div>
 </div>
 </main>
 
 <!-- Grenade Menu -->
 <div id="grenadeMenu">
+<div style="text-align:right"><span id="closeMenu" style="cursor:pointer;font-weight:bold;font-size:20px">X</span></div>
 <h3 id="menuTitle">Market</h3>
 <button data-type="smoke">Smoke</button>
 <button data-type="flash">Flash</button>
@@ -78,23 +79,6 @@ main{padding:15px;text-align:center}
 <div id="videoPopup">
 <iframe id="videoFrame" allowfullscreen></iframe>
 <button id="closeVideo">Kapat</button>
-</div>
-
-<!-- Ayarlar -->
-<div id="settingsPopup">
-<h3 id="settingsTitle">Ayarlar</h3>
-<button id="lightTheme">Beyaz Tema</button>
-<button id="darkTheme">Siyah Tema</button>
-<hr>
-<h4>Haritalar</h4>
-<button class="mapBtn">Dune</button>
-<button class="mapBtn">Rust</button>
-<button class="mapBtn">Zone 7</button>
-<button class="mapBtn">Hanami</button>
-<button class="mapBtn">Province</button>
-<button class="mapBtn">Breeze</button>
-<br><br>
-<button onclick="settingsPopup.style.display='none'">Kapat</button>
 </div>
 
 <!-- Tutorial -->
@@ -109,9 +93,9 @@ main{padding:15px;text-align:center}
 const ads=["https://www.tiktok.com/@solixx144","https://www.youtube.com/","https://example.com"];
 let currentAd=0;
 const adBanner=document.getElementById("adBanner");
-adBanner.onclick=()=>{window.open(ads[currentAd],"_blank"); currentAd=(currentAd+1)%ads.length};
+adBanner.onclick=()=>{window.open(ads[currentAd],"_blank"); currentAd=(currentAd+1)%ads.length;}
 
-// Menü
+// Menü toggle
 function toggleMenu(){
 const menu=document.getElementById("menu");
 menu.style.display=(menu.style.display==="block")?"none":"block";
@@ -135,8 +119,6 @@ langSelect.onchange=()=>{
 const lang=langSelect.value;
 document.getElementById("sandstone").innerText=texts[lang].header;
 document.getElementById("tutorial").querySelector("p").innerText=texts[lang].tutorial;
-document.getElementById("lightTheme").innerText=texts[lang].lightTheme;
-document.getElementById("darkTheme").innerText=texts[lang].darkTheme;
 document.querySelectorAll("#grenadeMenu button").forEach(btn=>{
 if(btn.dataset.type==="smoke") btn.innerText=texts[lang].smoke;
 if(btn.dataset.type==="flash") btn.innerText=texts[lang].flash;
@@ -145,8 +127,8 @@ if(btn.dataset.type==="molly") btn.innerText=texts[lang].molly;
 }
 
 // Tema
-document.getElementById("lightTheme").onclick=()=>document.body.style.background="#fff";
-document.getElementById("darkTheme").onclick=()=>document.body.style.background="#222";
+document.getElementById("lightTheme")?.addEventListener("click",()=>document.body.style.background="#fff");
+document.getElementById("darkTheme")?.addEventListener("click",()=>document.body.style.background="#222");
 
 // Grenade sistemi ve videolar
 const videos={
@@ -166,6 +148,7 @@ document.getElementById("menuTitle").innerText=area;
 document.getElementById("grenadeMenu").style.display="block";
 }
 
+// Grenade butonları -> video aç
 document.querySelectorAll("#grenadeMenu button").forEach(btn=>{
 btn.onclick=()=>{
 document.getElementById("videoFrame").src=videos[currentArea][btn.dataset.type]+"?autoplay=1";
@@ -174,16 +157,15 @@ document.getElementById("grenadeMenu").style.display="none";
 }
 });
 
-// Video kapatma
+// X ile popup kapatma
+document.getElementById("closeMenu").onclick=()=>{document.getElementById("grenadeMenu").style.display="none";};
 document.getElementById("closeVideo").onclick=()=>{
 document.getElementById("videoFrame").src="";
 document.getElementById("videoPopup").style.display="none";
 };
 
 // PWA Service Worker
-if("serviceWorker" in navigator){
-navigator.serviceWorker.register("sw.js");
-}
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
 </script>
 
 </body>
