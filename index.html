@@ -4,69 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sand Stone Lineup</title>
-<style>
-/* --- style.css içeriği --- */
-body { margin:0; font-family: Arial, sans-serif; transition: background 0.3s, color 0.3s; }
-body.light { background:#fff; color:#000; }
-body.dark { background:#111; color:#eee; }
-body.red { background: linear-gradient(90deg,#ff4d4d,#ff9999); color:#fff; }
-body.blue { background: linear-gradient(90deg,#4d4dff,#99ccff); color:#fff; }
-body.green { background: linear-gradient(90deg,#4dff4d,#99ff99); color:#000; }
-
-header { display:flex; justify-content:space-between; align-items:center; padding:10px; position:sticky; top:0; background:rgba(0,0,0,0.5); z-index:1000; }
-.lang-select select { padding:5px; }
-.map-container { position:relative; width:100%; max-width:1200px; margin:20px auto; }
-.map-container .map { width:100%; display:block; }
-
-/* NOKTALAR */
-.point { position:absolute; width:20px; height:20px; border-radius:50%; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
-.point.flash { background:white; border:2px dashed gray; box-shadow:0 0 12px rgba(255,255,255,0.5); animation: pulseFlash 1.2s infinite alternate, swayFlash 2s infinite ease-in-out;}
-.point.molly { background:red; border:2px solid orange; box-shadow:0 0 18px rgba(255,69,0,0.7); animation: pulseMolly 1.5s infinite alternate, swayMolly 3s infinite ease-in-out;}
-.point.smoke { background:gray; border:2px solid #aaa; box-shadow:0 0 12px rgba(128,128,128,0.5); animation: pulseSmoke 1.8s infinite alternate, swaySmoke 4s infinite ease-in-out;}
-.point.grenade { background:green; border:2px solid #222; box-shadow:0 0 14px rgba(0,255,0,0.5); animation: pulseGrenade 1.3s infinite alternate, swayGrenade 2.5s infinite ease-in-out;}
-.point:hover { transform: scale(1.8); box-shadow:0 0 30px rgba(255,255,255,0.9); }
-
-/* Pulse */
-@keyframes pulseFlash {0%{transform:scale(1);opacity:0.7;}100%{transform:scale(1.3);opacity:1;}}
-@keyframes pulseMolly {0%{transform:scale(1);opacity:0.7;}100%{transform:scale(1.4);opacity:1;}}
-@keyframes pulseSmoke {0%{transform:scale(1);opacity:0.7;}100%{transform:scale(1.35);opacity:1;}}
-@keyframes pulseGrenade {0%{transform:scale(1);opacity:0.7;}100%{transform:scale(1.3);opacity:1;}}
-
-/* Sway */
-@keyframes swayFlash {0%{transform:translateX(0);}25%{transform:translateX(-4px);}50%{transform:translateX(0);}75%{transform:translateX(4px);}100%{transform:translateX(0);}}
-@keyframes swayMolly {0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(0);}75%{transform:translateX(5px);}100%{transform:translateX(0);}}
-@keyframes swaySmoke {0%{transform:translateX(0);}25%{transform:translateX(-3px);}50%{transform:translateX(0);}75%{transform:translateX(3px);}100%{transform:translateX(0);}}
-@keyframes swayGrenade {0%{transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(0);}75%{transform:translateX(6px);}100%{transform:translateX(0);}}
-
-.popup { position:fixed; top:0; left:0; width:100%; height:100%; display:none; justify-content:center; align-items:center; background:rgba(0,0,0,0.7); z-index:2000; }
-.popup.show { display:flex; }
-.popup-card { background:#222; padding:10px; border-radius:10px; max-width:90%; }
-.popup-header { display:flex; justify-content:space-between; align-items:center; color:#fff; }
-.popup-card video { width:100%; max-width:400px; }
-
-.menu { position:fixed; top:0; right:-300px; width:300px; height:100%; background:#333; color:#fff; padding:20px; transition:0.3s; overflow-y:auto; z-index:1500; }
-.menu.show { right:0; }
-.menu button { display:block; width:100%; margin:5px 0; padding:10px; cursor:pointer; }
-
-.tutorial { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:2000; }
-.tutorial.show { display:flex; }
-.tutorial-card { background:#fff; padding:20px; border-radius:10px; max-width:90%; text-align:center; }
-
-.ad-wall { position:fixed; top:50%; transform:translateY(-50%); width:50px; height:200px; background:yellow; z-index:100; }
-.ad-wall.left { left:0; }
-.ad-wall.right { right:0; }
-
-@media(max-width:768px){
-  .ad-wall { width:40px; height:150px; }
-  .menu { width:70%; }
-  .popup-card video { max-width:90vw; }
-  .point { width:15px; height:15px; }
-}
-@media(max-width:480px){
-  .ad-wall { width:30px; height:120px; }
-  .point { width:12px; height:12px; }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="light" data-lang="tr">
 
@@ -89,19 +27,11 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 <main>
   <div class="map-container">
     <img class="map" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
-
     <!-- NOKTALAR -->
     <div class="point flash" data-video="videos/rickroll.mp4" style="left:60%;top:30%"></div>
-    <div class="point flash" data-video="videos/rickroll.mp4" style="left:70%;top:40%"></div>
-
     <div class="point molly" data-video="videos/rickroll.mp4" style="left:20%;top:50%"></div>
-    <div class="point molly" data-video="videos/rickroll.mp4" style="left:30%;top:60%"></div>
-
     <div class="point smoke" data-video="videos/rickroll.mp4" style="left:50%;top:70%"></div>
-    <div class="point smoke" data-video="videos/rickroll.mp4" style="left:55%;top:75%"></div>
-
     <div class="point grenade" data-video="videos/rickroll.mp4" style="left:40%;top:20%"></div>
-    <div class="point grenade" data-video="videos/rickroll.mp4" style="left:45%;top:25%"></div>
   </div>
 </main>
 
@@ -123,12 +53,10 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
   <button class="mapBtn inactive" data-text="mapRust">Rust – Yakında</button>
   <button class="mapBtn inactive" data-text="mapZone">Zone 7 – Yakında</button>
   <hr>
-  <h4 data-text="themesTitle">Temalar</h4>
-  <button class="themeBtn" data-theme="light" data-text="themeLight">Açık Tema</button>
-  <button class="themeBtn" data-theme="dark" data-text="themeDark">Koyu Tema</button>
-  <button class="themeBtn" data-theme="red" data-text="themeRed">Kırmızı Nitro</button>
-  <button class="themeBtn" data-theme="blue" data-text="themeBlue">Mavi Nitro</button>
-  <button class="themeBtn" data-theme="green" data-text="themeGreen">Yeşil Nitro</button>
+  <h4 data-text="themesTitle">Nitro Temalar</h4>
+  <button class="themeBtn red" data-theme="red">Kırmızı Nitro</button>
+  <button class="themeBtn blue" data-theme="blue">Mavi Nitro</button>
+  <button class="themeBtn green" data-theme="green">Yeşil Nitro</button>
   <hr>
   <h4 data-text="filterTitle">Noktalar</h4>
   <button onclick="filterPoints('flash')" data-text="flash">Flash</button>
@@ -154,51 +82,12 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
   </div>
 </div>
 
-<script>
-/* --- app.js içeriği --- */
-const texts = {
-  tr:{siteTitle:"Sand Stone Lineup",mapsTitle:"Haritalar",mapDune:"Dune – Yakında",mapRust:"Rust – Yakında",mapZone:"Zone 7 – Yakında",themesTitle:"Temalar",themeLight:"Açık Tema",themeDark:"Koyu Tema",themeRed:"Kırmızı Nitro",themeBlue:"Mavi Nitro",themeGreen:"Yeşil Nitro",filterTitle:"Noktalar",flash:"Flash",molly:"Molly",smoke:"Smoke",grenade:"Grenade",allPoints:"Hepsi",close:"Kapat",tutorialTitle:"Nasıl Kullanılır?",gotIt:"Tamam",tutorialText:`1. Noktalara tıklayın.<br>2. Video otomatik açılır.<br>3. Popup'u kapatmak için çarpıya tıklayın.<br>4. Menüden temayı ve filtreleri değiştirebilirsiniz.<br>5. Reklam duvarlarına tıklarsanız TikTok hesabına yönlendirilirsiniz.`},
-  en:{siteTitle:"Sand Stone Lineup",mapsTitle:"Maps",mapDune:"Dune – Coming Soon",mapRust:"Rust – Coming Soon",mapZone:"Zone 7 – Coming Soon",themesTitle:"Themes",themeLight:"Light Theme",themeDark:"Dark Theme",themeRed:"Red Nitro",themeBlue:"Blue Nitro",themeGreen:"Green Nitro",filterTitle:"Points",flash:"Flash",molly:"Molly",smoke:"Smoke",grenade:"Grenade",allPoints:"All",close:"Close",tutorialTitle:"How To Use",gotIt:"Got it",tutorialText:`1. Click the points.<br>2. Video will open automatically.<br>3. Click × to close popup.<br>4. Change theme & filters from menu.<br>5. Click ad walls to go TikTok.`},
-  ru:{siteTitle:"Sand Stone Lineup",mapsTitle:"Карты",mapDune:"Dune – Скоро",mapRust:"Rust – Скоро",mapZone:"Zone 7 – Скоро",themesTitle:"Темы",themeLight:"Светлая",themeDark:"Темная",themeRed:"Красная Nitro",themeBlue:"Синяя Nitro",themeGreen:"Зеленая Nitro",filterTitle:"Точки",flash:"Flash",molly:"Molly",smoke:"Smoke",grenade:"Grenade",allPoints:"Все",close:"Закрыть",tutorialTitle:"Как использовать",gotIt:"Понятно",tutorialText:`1. Нажмите на точки.<br>2. Видео откроется автоматически.<br>3. Нажмите × чтобы закрыть popup.<br>4. Меню для изменения темы и фильтров.<br>5. Нажмите рекламные стены, чтобы открыть TikTok.`}
-};
+<!-- ALT TEMA SEÇİMİ -->
+<div class="theme-bar">
+  <button id="lightThemeBtn">Beyaz Tema</button>
+  <button id="darkThemeBtn" class="dark">Siyah Tema</button>
+</div>
 
-const langSelect = document.getElementById("langSelect");
-langSelect.addEventListener("change",()=>{
-  const lang = langSelect.value;
-  document.body.dataset.lang = lang;
-  document.querySelectorAll("[data-text]").forEach(el=>{el.innerHTML = texts[lang][el.dataset.text];});
-  document.getElementById("tutorialText").innerHTML = texts[lang].tutorialText;
-});
-
-document.querySelectorAll(".ad-wall").forEach(ad=>ad.addEventListener("click",()=>window.open("https://www.tiktok.com/@solixx144","_blank")));
-
-const points = document.querySelectorAll(".point");
-const popup = document.getElementById("popup");
-const popupTitle = document.getElementById("popupTitle");
-const popupVideo = document.getElementById("popupVideo");
-const closePopup = document.getElementById("closePopup");
-
-points.forEach(point=>point.addEventListener("click",()=>{
-  popupTitle.textContent = point.className.split(" ")[1];
-  popupVideo.innerHTML = `<video width="320" height="180" src="${point.dataset.video}" controls autoplay></video>`;
-  popup.classList.add("show");
-}));
-closePopup.addEventListener("click",()=>{popup.classList.remove("show"); popupVideo.innerHTML="";});
-
-const menuBtn = document.getElementById("menuBtn");
-const mapMenu = document.getElementById("mapMenu");
-const closeMenu = document.getElementById("closeMenu");
-menuBtn.addEventListener("click",()=>mapMenu.classList.add("show"));
-closeMenu.addEventListener("click",()=>mapMenu.classList.remove("show"));
-
-const tutorial = document.getElementById("tutorial");
-const closeTutorial = document.getElementById("closeTutorial");
-window.addEventListener("load",()=>tutorial.classList.add("show"));
-closeTutorial.addEventListener("click",()=>tutorial.classList.remove("show"));
-
-document.querySelectorAll(".themeBtn").forEach(btn=>btn.addEventListener("click",()=>document.body.className=btn.dataset.theme));
-
-function filterPoints(type){points.forEach(p=>{p.style.display = (type==='all'||p.classList.contains(type))?'block':'none';});}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
