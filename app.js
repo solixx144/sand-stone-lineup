@@ -13,31 +13,19 @@ const closeMenu = document.getElementById("closeMenu");
 
 // NOKTA TIKLAMA
 points.forEach(point=>{
-  point.onclick=()=>{
+  point.addEventListener("click",()=>{
     popupTitle.textContent = point.dataset.name;
     popup.classList.add("show");
-  }
+  });
 });
 
 // POPUP KAPAT
-closePopup.onclick=()=>{
-  popup.classList.remove("show");
-};
+closePopup.addEventListener("click",()=>popup.classList.remove("show"));
 
 // MENÜ
-menuBtn.onclick=()=>{
-  mapMenu.classList.add("show");
-};
-
-closeMenu.onclick=()=>{
-  mapMenu.classList.remove("show");
-};
+menuBtn.addEventListener("click",()=>mapMenu.classList.add("show"));
+closeMenu.addEventListener("click",()=>mapMenu.classList.remove("show"));
 
 // TUTORIAL
-window.onload=()=>{
-  tutorial.classList.add("show");
-};
-
-closeTutorial.onclick=()=>{
-  tutorial.classList.remove("show");
-};
+window.addEventListener("load",()=>tutorial.classList.add("show"));
+closeTutorial.addEventListener("click",()=>tutorial.classList.remove("show"));
