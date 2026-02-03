@@ -3,30 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Oyun Profesyonel</title>
+<title>Sand Stone Mini Oyun</title>
 <style>
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:Arial, sans-serif; background:#fff; color:#000; display:flex; flex-direction:column; min-height:100vh; }
+
 /* Header */
 header { display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff; padding:10px 20px; flex-shrink:0; }
 header h1 { font-size:1.3rem; cursor:pointer; }
 header button { font-size:1rem; cursor:pointer; padding:5px 10px; }
+
 /* Main */
-main { flex:1; display:flex; justify-content:center; align-items:center; padding:20px; }
-canvas { border:2px solid #000; max-width:100%; height:auto; background:#eee; }
+main { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; }
+
+/* Mini map container ve fotoğraf */
+#miniMapContainer { position:relative; display:inline-block; }
+#miniMap { width:90%; max-width:800px; display:block; border:2px solid #000; border-radius:10px; cursor:pointer; }
+
+/* Mini map üstü reklam */
+#miniAd { position:absolute; top:5px; left:50%; transform:translateX(-50%); background:rgba(255,255,0,0.8); padding:5px 10px; border:1px solid #000; cursor:pointer; font-weight:bold; }
+
 /* Ayarlar Popup */
 #settingsPopup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:2px solid #000; padding:20px; z-index:50; }
-#settingsPopup button { margin:5px; cursor:pointer; }
-/* Video/Görsel overlay */
-.video-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:40; }
-.video-container iframe, .video-container img { width:80%; height:80%; }
+#settingsPopup button, #settingsPopup select { margin:5px; cursor:pointer; }
+
 /* Tutorial */
 .tutorial { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#f2f2f2; border:2px solid #000; padding:20px; z-index:60; display:none; }
 .tutorial button { margin:5px; }
-/* Reklam */
-.ad { position:absolute; background:rgba(255,255,0,0.7); color:#000; font-weight:bold; text-align:center; line-height:50px; cursor:pointer; border:1px solid #000; }
+
 /* Responsive */
-@media(max-width:1024px){ main{flex-direction:column;} }
 @media(max-width:768px){ header h1{font-size:1rem;} header button{font-size:0.9rem;} }
 @media(max-width:480px){ header{flex-direction:column;align-items:flex-start;} header h1{margin-bottom:5px;} }
 </style>
@@ -39,31 +44,35 @@ canvas { border:2px solid #000; max-width:100%; height:auto; background:#eee; }
 </header>
 
 <main>
-    <canvas id="gameCanvas"></canvas>
+    <div id="miniMapContainer">
+        <img id="miniMap" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
+        <div id="miniAd">REKLAM</div>
+    </div>
 </main>
-
-<!-- Video / Görsel Container -->
-<div class="video-container" id="videoContainer">
-    <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
-    <img id="fullImage" src="" style="display:none; max-width:90%; max-height:90%;">
-</div>
 
 <!-- Tutorial -->
 <div class="tutorial" id="tutorial">
-    <h2>Nasıl Oynanır?</h2>
-    <p>Mini mapte kırmızı noktaları tıklayın. Video yoksa "Yakında Gelecek 🚀" göreceksiniz.</p>
-    <p>Sol üstten ayarlara girip tema değiştirebilirsiniz.</p>
+    <h2 id="tutorialTitle">Nasıl Oynanır?</h2>
+    <p id="tutorialText1">Mini map üstteki fotoğrafa tıklayınca link açılacak.</p>
+    <p id="tutorialText2">Sol üstten ayarlara girip tema değiştirebilirsiniz.</p>
     <button id="closeTutorial">Tamam</button>
 </div>
 
 <!-- Ayarlar Popup -->
 <div id="settingsPopup">
-    <h2>Ayarlar & Haritalar</h2>
-    <p>Tema Seçimi:</p>
+    <h2 id="settingsTitle">Ayarlar & Haritalar</h2>
+    <p id="themeText">Tema Seçimi:</p>
     <button id="themeLight">🌞 Beyaz Tema</button>
     <button id="themeDark">🌙 Siyah Tema</button>
     <br><br>
-    <p>Haritalar:</p>
+    <p id="langText">Dil Seçimi:</p>
+    <select id="languageSelect">
+        <option value="tr">Türkçe</option>
+        <option value="en">English</option>
+        <option value="ru">Русский</option>
+    </select>
+    <br><br>
+    <p id="mapsText">Haritalar:</p>
     <button class="mapBtn">Dune</button>
     <button class="mapBtn">Rust</button>
     <button class="mapBtn">Zone 7</button>
@@ -83,89 +92,143 @@ const closeTutorial = document.getElementById('closeTutorial');
 tutorial.style.display='block';
 closeTutorial.addEventListener('click',()=>tutorial.style.display='none');
 
-// Canvas
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-function resizeCanvas(){ canvas.width=window.innerWidth*0.8; canvas.height=window.innerHeight*0.6; drawMap(currentMap); }
-window.addEventListener('resize',resizeCanvas);
+// Mini map ve reklam tıklamaları
+const miniMap = document.getElementById('miniMap');
+const miniAd = document.getElementById('miniAd');
 
-// Mini map
-const miniMapImg=new Image();
-miniMapImg.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10';
+// Mini map üzerindeki interaktif noktalar
+const mapSpots = [
+    {x:0.2, y:0.3, link:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+    {x:0.5, y:0.5, link:'https://www.tiktok.com/@solixx144'},
+    {x:0.7, y:0.2, link:'https://www.example.com'}
+];
 
-// Map ve zigzag noktaları
-const map1=[{x:100,y:150,width:50,height:50,videoUrl:''},{x:400,y:300,width:50,height:50,videoUrl:'https://www.youtube.com/embed/dQw4w9WgXcQ'}];
-const zigzagSpots=[{x:300,y:200,radius:10,videoUrl:'',color:'red'},{x:500,y:150,radius:10,videoUrl:'https://www.youtube.com/embed/dQw4w9WgXcQ',color:'orange'},{x:200,y:350,radius:10,videoUrl:'',color:'purple'}];
-let currentMap=map1;
+miniMap.addEventListener('click',(e)=>{
+    const rect = miniMap.getBoundingClientRect();
+    const clickX = (e.clientX - rect.left)/rect.width;
+    const clickY = (e.clientY - rect.top)/rect.height;
 
-// Reklamlar
-const ads=[{x:0,y:10,width:100,height:50,link:'https://www.tiktok.com/@solixx144',text:'REKLAM'},{x:0,y:70,width:100,height:50,link:'https://www.example.com',text:'LINK'}];
+    let clickedSpot = false;
+    mapSpots.forEach(spot=>{
+        const radius = 0.05;
+        if(Math.abs(clickX-spot.x)<radius && Math.abs(clickY-spot.y)<radius){
+            window.open(spot.link,'_blank');
+            clickedSpot = true;
+        }
+    });
 
-// Harita çizimi
-function drawMap(mapSpots){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(miniMapImg.complete){ ctx.drawImage(miniMapImg,0,0,canvas.width,canvas.height); }
-    mapSpots.forEach(spot=>{ ctx.beginPath(); ctx.arc(spot.x+spot.width/2,spot.y+spot.height/2,10,0,Math.PI*2); ctx.fillStyle='red'; ctx.fill(); });
-    zigzagSpots.forEach(spot=>{ ctx.beginPath(); ctx.arc(spot.x,spot.y,spot.radius,0,Math.PI*2); ctx.fillStyle=spot.color; ctx.fill(); });
-    drawAds();
-}
-function drawAds(){ ads.forEach(ad=>{ ad.x = canvas.width - ad.width - 10; ctx.fillStyle='rgba(255,255,0,0.7)'; ctx.fillRect(ad.x,ad.y,ad.width,ad.height); ctx.fillStyle='#000'; ctx.font='14px Arial'; ctx.fillText(ad.text,ad.x+15,ad.y+30); }); }
-
-// Video / Görsel açma
-const videoContainer=document.getElementById('videoContainer');
-const videoPlayer=document.getElementById('videoPlayer');
-const fullImage=document.getElementById('fullImage');
-function openVideo(url){ 
-    if(!url){ alert('Yakında Gelecek 🚀'); return; }
-    videoPlayer.style.display='block';
-    fullImage.style.display='none';
-    videoPlayer.src=url;
-    videoContainer.style.display='flex';
-}
-videoContainer.addEventListener('click',()=>{
-    videoContainer.style.display='none';
-    videoPlayer.src='';
+    if(!clickedSpot){
+        window.open('https://www.tiktok.com/@solixx144','_blank');
+    }
 });
 
-// Canvas tıklama
-canvas.addEventListener('click',e=>{
-    const mouseX=e.offsetX;
-    const mouseY=e.offsetY;
-    let clicked=false;
-    currentMap.forEach(spot=>{ if(mouseX>=spot.x && mouseX<=spot.x+spot.width && mouseY>=spot.y && mouseY<=spot.y+spot.height){ openVideo(spot.videoUrl); clicked=true; } });
-    zigzagSpots.forEach(spot=>{ const dx=mouseX-spot.x, dy=mouseY-spot.y; if(Math.sqrt(dx*dx+dy*dy)<=spot.radius){ openVideo(spot.videoUrl); clicked=true; } });
-    ads.forEach(ad=>{ if(mouseX>=ad.x && mouseX<=ad.x+ad.width && mouseY>=ad.y && mouseY<=ad.y+ad.height){ window.open(ad.link,'_blank'); clicked=true; } });
-    if(!clicked && currentMap===map1){ alert('Yakında Gelecek 🚀'); }
+miniAd.addEventListener('click',()=>window.open('https://www.tiktok.com/@solixx144','_blank'));
+
+// Sand Stone başlığı tıklayınca efekt
+const sandStoneTitle = document.getElementById('sandStoneTitle');
+sandStoneTitle.addEventListener('click',()=>miniMap.scrollIntoView({behavior:'smooth', block:'center'}));
+
+// Ayarlar paneli
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPopup = document.getElementById('settingsPopup');
+const closeSettings = document.getElementById('closeSettings');
+const themeLight = document.getElementById('themeLight');
+const themeDark = document.getElementById('themeDark');
+const reportError = document.getElementById('reportError');
+const languageSelect = document.getElementById('languageSelect');
+
+// Tema değiştirme
+themeLight.addEventListener('click',()=>{
+    document.body.style.backgroundColor='#fff';
+    document.body.style.color='#000';
+    settingsPopup.style.backgroundColor='#fff';
+    settingsPopup.style.color='#000';
+});
+themeDark.addEventListener('click',()=>{
+    document.body.style.backgroundColor='#222';
+    document.body.style.color='#fff';
+    settingsPopup.style.backgroundColor='#333';
+    settingsPopup.style.color='#fff';
 });
 
-// Ayarlar ve haritalar
-const settingsBtn=document.getElementById('settingsBtn');
-const settingsPopup=document.getElementById('settingsPopup');
-const closeSettings=document.getElementById('closeSettings');
-const themeLight=document.getElementById('themeLight');
-const themeDark=document.getElementById('themeDark');
-const reportError=document.getElementById('reportError');
+// Haritalar tıklaması (Yakında Gelecek)
+const mapButtons = document.querySelectorAll('.mapBtn');
+mapButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        const lang = languageSelect.value;
+        let msg = '';
+        if(lang==='tr') msg='Yakında Gelecek 🚀';
+        else if(lang==='en') msg='Coming Soon 🚀';
+        else if(lang==='ru') msg='Скоро будет 🚀';
+        alert(msg);
+    });
+});
 
+// Hata bildir
+reportError.addEventListener('click',()=>{
+    window.open('https://www.tiktok.com/@solixx144','_blank');
+    const lang = languageSelect.value;
+    let alertMsg = '';
+    if(lang==='tr') alertMsg="Hata bildirmek için TikTok DM atabilirsiniz!";
+    else if(lang==='en') alertMsg="Send a TikTok DM to report an issue!";
+    else if(lang==='ru') alertMsg="Отправьте TikTok DM, чтобы сообщить о проблеме!";
+    alert(alertMsg);
+});
+
+// Ayarlar popup aç/kapat
 settingsBtn.addEventListener('click',()=>settingsPopup.style.display='block');
 closeSettings.addEventListener('click',()=>settingsPopup.style.display='none');
-themeLight.addEventListener('click',()=>{ document.body.style.backgroundColor='#fff'; document.body.style.color='#000'; settingsPopup.style.backgroundColor='#fff'; settingsPopup.style.color='#000'; });
-themeDark.addEventListener('click',()=>{ document.body.style.backgroundColor='#222'; document.body.style.color='#fff'; settingsPopup.style.backgroundColor='#333'; settingsPopup.style.color='#fff'; });
-reportError.addEventListener('click',()=>{ window.open('https://www.tiktok.com/@solixx144','_blank'); alert("Hata bildirmek için TikTok DM atabilirsiniz!"); });
 
-// Haritalar menüsü (Yakında)
-document.querySelectorAll('.mapBtn').forEach(btn=>btn.addEventListener('click',()=>{ alert('Yakında Gelecek 🚀'); }));
+// Dil değişimi – tutorial ve ayarlar
+const tutorialTitle = document.getElementById('tutorialTitle');
+const tutorialText1 = document.getElementById('tutorialText1');
+const tutorialText2 = document.getElementById('tutorialText2');
+const settingsTitle = document.getElementById('settingsTitle');
+const themeText = document.getElementById('themeText');
+const langText = document.getElementById('langText');
+const mapsText = document.getElementById('mapsText');
 
-// Sand Stone başlığı
-const sandStoneTitle = document.getElementById('sandStoneTitle');
-sandStoneTitle.addEventListener('click',()=>{
-    videoPlayer.style.display='none';
-    fullImage.style.display='block';
-    fullImage.src=miniMapImg.src;
-    videoContainer.style.display='flex';
+const translations = {
+    tr:{
+        tutorialTitle:"Nasıl Oynanır?",
+        tutorialText1:"Mini map üstteki fotoğrafa tıklayınca link açılacak.",
+        tutorialText2:"Sol üstten ayarlara girip tema değiştirebilirsiniz.",
+        settingsTitle:"Ayarlar & Haritalar",
+        themeText:"Tema Seçimi:",
+        langText:"Dil Seçimi:",
+        mapsText:"Haritalar:"
+    },
+    en:{
+        tutorialTitle:"How to Play?",
+        tutorialText1:"Click on the mini map image above to open the link.",
+        tutorialText2:"Go to settings at the top-left to change the theme.",
+        settingsTitle:"Settings & Maps",
+        themeText:"Theme Selection:",
+        langText:"Language:",
+        mapsText:"Maps:"
+    },
+    ru:{
+        tutorialTitle:"Как играть?",
+        tutorialText1:"Нажмите на изображение мини-карты выше, чтобы открыть ссылку.",
+        tutorialText2:"Перейдите в настройки в левом верхнем углу, чтобы изменить тему.",
+        settingsTitle:"Настройки и карты",
+        themeText:"Выбор темы:",
+        langText:"Язык:",
+        mapsText:"Карты:"
+    }
+};
+
+languageSelect.addEventListener('change', ()=>{
+    const lang = languageSelect.value;
+    tutorialTitle.textContent = translations[lang].tutorialTitle;
+    tutorialText1.textContent = translations[lang].tutorialText1;
+    tutorialText2.textContent = translations[lang].tutorialText2;
+    settingsTitle.textContent = translations[lang].settingsTitle;
+    themeText.textContent = translations[lang].themeText;
+    langText.textContent = translations[lang].langText;
+    mapsText.textContent = translations[lang].mapsText;
 });
-
-// Başlangıç
-resizeCanvas();
 </script>
+
 </body>
 </html>
