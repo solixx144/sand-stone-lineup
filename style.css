@@ -1,41 +1,59 @@
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#fff;color:#000}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;color:#fff;position:relative;z-index:5}
-.map-container{position:relative;width:90%;max-width:800px;margin:20px auto}
-.map{width:100%;border-radius:10px}
-
 /* NOKTALAR */
-.point{position:absolute;width:16px;height:16px;border-radius:50%;cursor:pointer;animation:float 1.6s ease-in-out infinite alternate,glow 2s ease-in-out infinite;}
-.point.flash{background:white;border:2px dashed #ccc;}
-.point.molly{background:red;border:2px solid orange;}
-.point.smoke{background:grey;border:2px solid #999;}
-.point.grenade{background:#9dbb6c;border:2px solid #556b2f;}
-@keyframes float{0%{transform:translateY(-3px)}100%{transform:translateY(3px)}}
-@keyframes glow{0%{box-shadow:0 0 6px}50%{box-shadow:0 0 14px}100%{box-shadow:0 0 6px}}
+.point {
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  cursor:pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
 
-/* POPUP */
-.popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;color:#fff;padding:20px;border-radius:12px;z-index:10}
-.popup.show{display:block}
-.popup-header{display:flex;justify-content:space-between;align-items:center}
+/* Flash */
+.point.flash { 
+  background:white; 
+  border:2px dashed gray; 
+  box-shadow:0 0 12px rgba(255,255,255,0.5);
+  animation: pulseFlash 1.2s infinite alternate, swayFlash 2s infinite ease-in-out;
+}
 
-/* MENU */
-.menu{display:none;position:fixed;top:60px;right:20px;background:#111;color:white;padding:15px;border-radius:10px;z-index:20}
-.menu.show{display:block}
-.mapBtn,.closeMenu,.themeBtn{width:100%;margin-top:6px;padding:8px;border:none;border-radius:6px;cursor:pointer}
+/* Molly */
+.point.molly { 
+  background:red; 
+  border:2px solid orange; 
+  box-shadow:0 0 18px rgba(255,69,0,0.7);
+  animation: pulseMolly 1.5s infinite alternate, swayMolly 3s infinite ease-in-out;
+}
 
-/* TUTORIAL */
-.tutorial{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#eee;padding:20px;border-radius:12px}
-.tutorial.show{display:block}
+/* Smoke */
+.point.smoke { 
+  background:gray; 
+  border:2px solid #aaa; 
+  box-shadow:0 0 12px rgba(128,128,128,0.5);
+  animation: pulseSmoke 1.8s infinite alternate, swaySmoke 4s infinite ease-in-out;
+}
 
-/* TEMALAR */
-body.light{background:#fff;color:#000} body.light header{background:#111;color:#fff}
-body.dark{background:#111;color:#eee} body.dark header{background:#222;color:#fff}
-body.red{background:#330000;color:#fff} body.red header{background:#660000;color:#fff}
-body.blue{background:#001133;color:#fff} body.blue header{background:#004488;color:#fff}
-body.green{background:#113300;color:#fff} body.green header{background:#446600;color:#fff}
+/* Grenade */
+.point.grenade { 
+  background:green; 
+  border:2px solid #222; 
+  box-shadow:0 0 14px rgba(0,255,0,0.5);
+  animation: pulseGrenade 1.3s infinite alternate, swayGrenade 2.5s infinite ease-in-out;
+}
 
-/* SABİT REKLAM */
-.ad-banner{position:fixed;top:50%;transform:translateY(-50%);background:yellow;color:black;font-weight:bold;padding:15px;text-decoration:none;z-index:50}
-.ad-banner.left{left:0;border-radius:0 10px 10px 0;}
-.ad-banner.right{right:0;border-radius:10px 0 0 10px;}
-@media(max-width:768px){.ad-banner{padding:10px;font-size:14px}}
+/* Hover efektleri */
+.point:hover {
+  transform: scale(1.8);
+  box-shadow:0 0 30px rgba(255,255,255,0.9);
+}
+
+/* Pulse Animations */
+@keyframes pulseFlash { 0% {transform:scale(1);opacity:0.7;} 100%{transform:scale(1.3);opacity:1;} }
+@keyframes pulseMolly { 0% {transform:scale(1);opacity:0.7;} 100%{transform:scale(1.4);opacity:1;} }
+@keyframes pulseSmoke { 0% {transform:scale(1);opacity:0.7;} 100%{transform:scale(1.35);opacity:1;} }
+@keyframes pulseGrenade { 0% {transform:scale(1);opacity:0.7;} 100%{transform:scale(1.3);opacity:1;} }
+
+/* Sway Animations */
+@keyframes swayFlash { 0% {transform:translateX(0);}25%{transform:translateX(-4px);}50%{transform:translateX(0);}75%{transform:translateX(4px);}100%{transform:translateX(0);} }
+@keyframes swayMolly { 0% {transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(0);}75%{transform:translateX(5px);}100%{transform:translateX(0);} }
+@keyframes swaySmoke { 0% {transform:translateX(0);}25%{transform:translateX(-3px);}50%{transform:translateX(0);}75%{transform:translateX(3px);}100%{transform:translateX(0);} }
+@keyframes swayGrenade { 0% {transform:translateX(0);}25%{transform:translateX(-6px);}50%{transform:translateX(0);}75%{transform:translateX(6px);}100%{transform:translateX(0);} }
