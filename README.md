@@ -1,4 +1,3 @@
-## https://solixx144.github.io/sand-stone-lineup/
 # Sand Stone Lineup
 
 Sand Stone Lineup, oyun içi smoke / flash / molly lineuplarını
