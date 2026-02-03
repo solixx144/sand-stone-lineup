@@ -1,150 +1,121 @@
-/* Genel */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #fff;
-  color: #000;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#fff;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: linear-gradient(90deg, #222, #111);
-  color: #fff;
-  border-bottom: 2px solid #444;
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#111;
+  color:#fff;
 }
 
-.map-container {
-  position: relative;
-  width: 90%;
-  max-width: 800px;
-  margin: 20px auto;
+.map-container{
+  position:relative;
+  width:90%;
+  max-width:800px;
+  margin:20px auto;
 }
 
-.map-container img.map {
-  width: 100%;
-  border: 2px solid #000;
-  border-radius: 10px;
+.map{
+  width:100%;
+  border-radius:10px;
 }
 
-/* Noktalar */
-.point {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  cursor: pointer;
-  background: red;
-  animation: pulse 1.6s ease-in-out infinite alternate, glow 2s ease-in-out infinite alternate;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(255,0,0,0.6), 0 0 16px rgba(255,0,0,0.4), 0 0 24px rgba(255,0,0,0.2);
+/* KIRMIZI NOKTALAR */
+.point{
+  position:absolute;
+  width:16px;
+  height:16px;
+  background:red;
+  border-radius:50%;
+  cursor:pointer;
+  animation:float 1.6s ease-in-out infinite alternate,
+           glow 2s ease-in-out infinite;
 }
 
-.point:hover {
-  box-shadow: 0 0 16px rgba(255,0,0,0.8), 0 0 24px rgba(255,0,0,0.6), 0 0 32px rgba(255,0,0,0.4);
-  transform: scale(1.15);
+@keyframes float{
+  from{transform:translateY(-3px)}
+  to{transform:translateY(3px)}
 }
 
-/* Animasyonlar */
-@keyframes pulse {
-  from { transform: translateY(-2px); }
-  to { transform: translateY(3px); }
+@keyframes glow{
+  0%{box-shadow:0 0 8px red}
+  50%{box-shadow:0 0 18px red}
+  100%{box-shadow:0 0 8px red}
 }
 
-@keyframes glow {
-  0% { box-shadow: 0 0 8px rgba(255,0,0,0.6),0 0 16px rgba(255,0,0,0.4),0 0 24px rgba(255,0,0,0.2);}
-  50% { box-shadow: 0 0 12px rgba(255,0,0,0.8),0 0 20px rgba(255,0,0,0.5),0 0 28px rgba(255,0,0,0.3);}
-  100% { box-shadow:0 0 8px rgba(255,0,0,0.6),0 0 16px rgba(255,0,0,0.4),0 0 24px rgba(255,0,0,0.2);}
+/* POPUP */
+.popup{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#111;
+  color:#fff;
+  padding:20px;
+  border-radius:12px;
+  z-index:10;
 }
 
-/* Popup */
-.popup, .tutorial {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.85);
-  opacity: 0;
-  padding: 20px;
-  border-radius: 15px;
-  background: rgba(20,20,20,0.95);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  backdrop-filter: blur(5px);
-  z-index: 400;
-  transition: transform 0.35s ease, opacity 0.35s ease;
+.popup.show{display:block}
+
+.popup-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.popup.show, .tutorial.show {
-  display: block;
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
+.grenade-btn{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border:none;
+  border-radius:8px;
+  background:#ff2d2d;
+  color:white;
+  cursor:pointer;
 }
 
-.popup-card, .tutorial-card { width: 250px; }
-
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  margin-bottom: 10px;
+/* MENÜ */
+.menu{
+  display:none;
+  position:fixed;
+  top:60px;
+  right:20px;
+  background:#111;
+  color:white;
+  padding:15px;
+  border-radius:10px;
+  z-index:20;
 }
 
-.popup-close {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-  transition: color 0.2s ease;
+.menu.show{display:block}
+
+.mapBtn, .closeMenu{
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.popup-close:hover { color: red; }
-
-/* Grenade Butonlar */
-.grenade-btn {
-  padding: 12px;
-  width: 100%;
-  margin-bottom: 8px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
-  color: white;
-  box-shadow: 0 4px 12px rgba(255,0,0,0.4);
-  transition: all 0.25s ease;
+/* TUTORIAL */
+.tutorial{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#eee;
+  padding:20px;
+  border-radius:12px;
 }
 
-.grenade-btn:hover {
-  background: linear-gradient(135deg,#ff1a1a,#ff4d4d);
-  transform: scale(1.1);
-  box-shadow:0 6px 18px rgba(255,0,0,0.6);
-}
-
-/* Mini Tooltip */
-.mini-tooltip {
-  position: absolute;
-  padding: 6px 10px;
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  border-radius: 6px;
-  font-size: 12px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, -120%) scale(0.8);
-  transition: all 0.3s ease;
-  z-index: 500;
-}
-
-.mini-tooltip.show {
-  opacity: 1;
-  transform: translate(-50%, -140%) scale(1);
-}
-
-/* Responsive */
-@media (max-width: 768px) { .popup-card, .tutorial-card { width: 80vw; } }
-@media (max-width: 480px) { header{flex-direction:column;align-items:flex-start;} .map-container{width:95%;} .popup-card, .tutorial-card{width:90vw;} }
+.tutorial.show{display:block}
