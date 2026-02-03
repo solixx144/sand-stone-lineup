@@ -3,186 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sand Stone Mini Oyun</title>
+<title>Sand Stone Lineup</title>
+
 <style>
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:Arial, sans-serif; background:#fff; color:#000; display:flex; flex-direction:column; min-height:100vh; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#fff;color:#000;min-height:100vh}
 
-header { display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff; padding:10px 20px; flex-shrink:0; }
-header h1 { font-size:1.3rem; cursor:pointer; }
-header button { font-size:1rem; cursor:pointer; padding:5px 10px; }
+/* Banner */
+#topBanner{
+position:fixed;top:0;left:0;width:100%;
+background:yellow;color:black;
+text-align:center;padding:10px;
+font-weight:bold;cursor:pointer;z-index:1000}
 
-main { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; }
+/* Header */
+header{
+margin-top:45px;
+display:flex;justify-content:space-between;
+align-items:center;
+background:#222;color:#fff;
+padding:10px 20px}
 
-#miniMapContainer { position:relative; display:inline-block; margin-bottom:10px; }
-#miniMap { width:90%; max-width:800px; display:block; border:2px solid #000; border-radius:10px; cursor:pointer; }
+/* Main */
+main{
+display:flex;justify-content:center;
+align-items:center;padding:20px}
 
-#miniAd { position:absolute; top:5px; left:50%; transform:translateX(-50%); background:rgba(255,255,0,0.8); padding:5px 10px; border:1px solid #000; cursor:pointer; font-weight:bold; }
+/* Mini map */
+#miniMapContainer{position:relative}
+#miniMap{
+width:90vw;max-width:800px;
+border:2px solid #000;
+border-radius:10px}
 
-#reportError, #adminLoginBtn { margin-top:10px; padding:5px 10px; cursor:pointer; }
+/* Kırmızı nokta */
+.red-dot{
+position:absolute;width:14px;height:14px;
+background:red;border-radius:50%;
+border:2px solid white;
+transform:translate(-50%,-50%);
+cursor:pointer}
 
-#settingsPopup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:2px solid #000; padding:20px; z-index:50; }
-#settingsPopup button { margin:5px; cursor:pointer; }
+/* Grenade menü */
+#grenadeMenu{
+display:none;position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:#111;padding:15px;
+border-radius:10px;z-index:300}
 
-.tutorial { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#f2f2f2; border:2px solid #000; padding:20px; z-index:60; display:none; }
-.tutorial button { margin:5px; }
+#grenadeMenu h3{
+color:white;text-align:center;margin-bottom:8px}
 
-@media(max-width:768px){ header h1{font-size:1rem;} header button{font-size:0.9rem;} }
-@media(max-width:480px){ header{flex-direction:column;align-items:flex-start;} header h1{margin-bottom:5px;} }
+#grenadeMenu button{
+width:100%;margin:5px 0;
+padding:8px;background:#222;
+color:white;border:none;
+border-radius:6px;cursor:pointer}
+
+#grenadeMenu button:hover{background:red}
+
+/* Video popup */
+#videoPopup{
+display:none;position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:black;padding:10px;
+border-radius:10px;z-index:400}
+
+#videoPopup iframe{
+width:320px;height:180px}
+
+#videoPopup button{
+width:100%;margin-top:6px}
+
+/* Ayarlar */
+#settingsPopup{
+display:none;position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:white;padding:20px;
+border-radius:10px;z-index:300}
+
+/* Tutorial */
+#tutorial{
+position:fixed;top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:#f2f2f2;padding:20px;
+border-radius:10px;z-index:500}
 </style>
 </head>
+
 <body>
 
+<div id="topBanner">REKLAM – TIKLA</div>
+
 <header>
-    <h1 id="sandStoneTitle">Sand Stone</h1>
-    <button id="settingsBtn">☰ Ayarlar</button>
+<h1>Sand Stone Lineup</h1>
+<button id="settingsBtn">☰</button>
 </header>
 
 <main>
-    <div id="miniMapContainer">
-        <img id="miniMap" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
-        <div id="miniAd">REKLAM</div>
-    </div>
-    <button id="reportError">Hata Bildir</button>
-    <button id="adminLoginBtn">Admin Girişi</button>
+<div id="miniMapContainer">
+<img id="miniMap" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
+
+<!-- ANA NOKTALAR -->
+<div class="red-dot" id="marketDot" style="left:58%;top:62%"></div>
+<div class="red-dot" id="aSiteDot" style="left:25%;top:40%"></div>
+<div class="red-dot" id="bSiteDot" style="left:78%;top:35%"></div>
+</div>
 </main>
 
-<div class="tutorial" id="tutorial">
-    <h2>Nasıl Oynanır?</h2>
-    <p>Mini map üzerindeki noktalara tıklayınca farklı linkler açılacak.</p>
-    <p>Mini map üzerindeki boş alan veya reklam tıklanınca ana link açılacak.</p>
-    <p>Sol üstten ayarlara girip tema değiştirebilirsiniz.</p>
-    <button id="closeTutorial">Tamam</button>
+<!-- Grenade Menü -->
+<div id="grenadeMenu">
+<h3 id="menuTitle">Market</h3>
+<button data-type="smoke">Smoke</button>
+<button data-type="flash">Flash</button>
+<button data-type="molly">Molly</button>
 </div>
 
+<!-- Video -->
+<div id="videoPopup">
+<iframe id="videoFrame" allowfullscreen></iframe>
+<button id="closeVideo">Kapat</button>
+</div>
+
+<!-- Ayarlar -->
 <div id="settingsPopup">
-    <h2>Ayarlar & Haritalar</h2>
-    <p>Tema Seçimi:</p>
-    <button id="themeLight">🌞 Beyaz Tema</button>
-    <button id="themeDark">🌙 Siyah Tema</button>
-    <br><br>
-    <p>Haritalar:</p>
-    <button class="mapBtn">Dune</button>
-    <button class="mapBtn">Rust</button>
-    <button class="mapBtn">Zone 7</button>
-    <button class="mapBtn">Hanami</button>
-    <button class="mapBtn">Province</button>
-    <button class="mapBtn">Breeze</button>
-    <br><br>
-    <button id="closeSettings">Kapat</button>
+<h3>Ayarlar</h3>
+<button id="lightTheme">Beyaz Tema</button>
+<button id="darkTheme">Siyah Tema</button>
+<hr>
+<h4>Haritalar</h4>
+<button class="mapBtn">Dune</button>
+<button class="mapBtn">Rust</button>
+<button class="mapBtn">Zone 7</button>
+<button class="mapBtn">Hanami</button>
+<button class="mapBtn">Province</button>
+<button class="mapBtn">Breeze</button>
+<br><br>
+<button onclick="settingsPopup.style.display='none'">Kapat</button>
+</div>
+
+<!-- Tutorial -->
+<div id="tutorial">
+<h3>Nasıl Kullanılır?</h3>
+<p>Kırmızı noktalara tıkla → grenade seç → video izle</p>
+<button onclick="tutorial.style.display='none'">Tamam</button>
 </div>
 
 <script>
-// Tutorial
-const tutorial = document.getElementById('tutorial');
-tutorial.style.display='block';
-document.getElementById('closeTutorial').addEventListener('click',()=>tutorial.style.display='none');
+// Banner
+topBanner.onclick=()=>window.open("https://www.tiktok.com/@solixx144","_blank");
 
-// Mini map ve reklam
-const miniMap = document.getElementById('miniMap');
-const miniAd = document.getElementById('miniAd');
-const reportError = document.getElementById('reportError');
-let mapSpots = JSON.parse(localStorage.getItem('mapSpots')) || [
-    {x:0.2, y:0.3, link:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-    {x:0.5, y:0.5, link:'https://www.tiktok.com/@solixx144'},
-    {x:0.7, y:0.2, link:'https://www.example.com'}
-];
-
-// Tıklama kontrolü
-miniMap.addEventListener('click', (e) => {
-    const rect = miniMap.getBoundingClientRect();
-    const clickX = (e.clientX - rect.left) / rect.width;
-    const clickY = (e.clientY - rect.top) / rect.height;
-
-    let clickedSpot = false;
-    mapSpots.forEach(spot => {
-        const radius = 0.05;
-        if(Math.abs(clickX - spot.x) < radius && Math.abs(clickY - spot.y) < radius){
-            window.open(spot.link,'_blank');
-            clickedSpot = true;
-        }
-    });
-
-    if(!clickedSpot) window.open('https://www.tiktok.com/@solixx144','_blank');
-});
-
-miniAd.addEventListener('click',()=>window.open('https://www.tiktok.com/@solixx144','_blank'));
-reportError.addEventListener('click',()=>{
-    window.open('https://www.tiktok.com/@solixx144','_blank');
-    alert("Hata bildirmek için TikTok DM atabilirsiniz!");
-});
-
-document.getElementById('sandStoneTitle').addEventListener('click',()=>miniMap.scrollIntoView({behavior:'smooth', block:'center'}));
-
-// Ayarlar paneli
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsPopup = document.getElementById('settingsPopup');
-settingsBtn.addEventListener('click',()=>settingsPopup.style.display='block');
-document.getElementById('closeSettings').addEventListener('click',()=>settingsPopup.style.display='none');
+// Ayarlar
+settingsBtn.onclick=()=>settingsPopup.style.display="block";
 
 // Tema
-document.getElementById('themeLight').addEventListener('click',()=>{
-    document.body.style.backgroundColor='#fff';
-    document.body.style.color='#000';
-    settingsPopup.style.backgroundColor='#fff';
-    settingsPopup.style.color='#000';
-});
-document.getElementById('themeDark').addEventListener('click',()=>{
-    document.body.style.backgroundColor='#222';
-    document.body.style.color='#fff';
-    settingsPopup.style.backgroundColor='#333';
-    settingsPopup.style.color='#fff';
-});
+lightTheme.onclick=()=>document.body.style.background="#fff";
+darkTheme.onclick=()=>document.body.style.background="#222";
 
-// Haritalar menüsü (şimdilik Yakında)
-document.querySelectorAll('.mapBtn').forEach(btn=>{
-    btn.addEventListener('click',()=>{ alert('Yakında Gelecek 🚀'); });
-});
+// Haritalar -> Yakında
+document.querySelectorAll(".mapBtn")
+.forEach(b=>b.onclick=()=>alert("Yakında 🚧"));
 
-// Admin mod
-let adminMode = false;
-document.getElementById('adminLoginBtn').addEventListener('click', ()=>{
-    const pwd = prompt("Admin şifresini gir:");
-    if(pwd === "solixx123"){
-        adminMode = true;
-        alert("Admin modu açıldı! Artık noktalar ekleyebilirsiniz.");
-        showAdminPanel();
-    } else {
-        alert("Yanlış şifre!");
-    }
-});
+// Grenade sistemi
+const videos={
+Market:{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+"A Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+"B Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
+molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
+};
 
-function showAdminPanel(){
-    const panel = document.createElement('div');
-    panel.style.position='fixed';
-    panel.style.bottom='10px';
-    panel.style.right='10px';
-    panel.style.background='rgba(0,0,0,0.8)';
-    panel.style.color='#fff';
-    panel.style.padding='10px';
-    panel.style.zIndex='100';
-    panel.innerHTML = `
-        <h4>Yeni Nokta Ekle</h4>
-        X (0-1): <input type="number" id="newX" step="0.01" min="0" max="1"><br>
-        Y (0-1): <input type="number" id="newY" step="0.01" min="0" max="1"><br>
-        Link: <input type="text" id="newLink"><br>
-        <button id="addSpot">Ekle</button>
-    `;
-    document.body.appendChild(panel);
+let currentArea="Market";
 
-    document.getElementById('addSpot').addEventListener('click', ()=>{
-        const x = parseFloat(document.getElementById('newX').value);
-        const y = parseFloat(document.getElementById('newY').value);
-        const link = document.getElementById('newLink').value;
-        if(!isNaN(x) && !isNaN(y) && link){
-            mapSpots.push({x,y,link});
-            localStorage.setItem('mapSpots', JSON.stringify(mapSpots));
-            alert("Yeni nokta eklendi ve kaydedildi!");
-        } else {
-            alert("Lütfen geçerli değerler girin.");
-        }
-    });
+marketDot.onclick=()=>openMenu("Market");
+aSiteDot.onclick=()=>openMenu("A Site");
+bSiteDot.onclick=()=>openMenu("B Site");
+
+function openMenu(area){
+currentArea=area;
+menuTitle.innerText=area;
+grenadeMenu.style.display="block";
 }
+
+document.querySelectorAll("#grenadeMenu button")
+.forEach(btn=>{
+btn.onclick=()=>{
+videoFrame.src=videos[currentArea][btn.dataset.type]+"?autoplay=1";
+videoPopup.style.display="block";
+grenadeMenu.style.display="none";
+}});
+
+closeVideo.onclick=()=>{
+videoPopup.style.display="none";
+videoFrame.src="";
+};
 </script>
 
 </body>
