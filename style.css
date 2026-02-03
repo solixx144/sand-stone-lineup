@@ -1,51 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background: #0f0f0f;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0d0d0d;
   color: white;
-  font-family: Arial, sans-serif;
 }
 
 /* ÜST BAR */
 .top-bar {
-  display: flex;
-  gap: 6px;
-  padding: 10px;
+  padding: 12px;
   background: #111;
+  text-align: center;
+  border-bottom: 1px solid #222;
 }
 
-.tab {
-  background: #222;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.tab.active {
-  background: red;
-}
-
-#languageSelect {
-  margin-left: auto;
-  background: #222;
-  color: white;
-  border: none;
+.top-bar h1 {
+  margin: 0;
+  font-size: 18px;
 }
 
 /* MAP */
 .map-container {
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: auto;
+  max-width: 500px;
+  margin: 20px auto;
 }
 
 .map {
   width: 100%;
   display: block;
+  border-radius: 14px;
 }
 
-/* NOKTA */
+/* NOKTALAR */
 .point {
   position: absolute;
   width: 14px;
@@ -53,23 +43,87 @@ body {
   background: red;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 10px red;
+  box-shadow: 0 0 14px rgba(255, 0, 0, 0.8);
+  animation: pulse 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: translateY(-2px); }
+  to { transform: translateY(3px); }
 }
 
 /* POPUP */
 .popup {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.popup-content {
-  background: #1c1c1c;
-  padding: 20px;
-  width: 80%;
-  max-width: 300px;
-  margin: 150px auto;
-  text-align: center;
-  border-radius: 8px;
+.popup-card {
+  width: 90%;
+  max-width: 320px;
+  background: linear-gradient(180deg, #1f1f1f, #121212);
+  border-radius: 16px;
+  padding: 16px;
+  animation: popupIn 0.25s ease;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes popupIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* GRENADE BUTONLARI */
+.popup-body {
+  display: grid;
+  gap: 10px;
+}
+
+.grenade {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+  background: #222;
+  transition: transform 0.15s ease;
+}
+
+.grenade:hover {
+  transform: scale(1.05);
+}
+
+.smoke {
+  box-shadow: 0 0 12px rgba(200, 200, 200, 0.35);
+}
+
+.flash {
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.35);
+}
+
+.molly {
+  box-shadow: 0 0 12px rgba(255, 80, 0, 0.45);
 }
