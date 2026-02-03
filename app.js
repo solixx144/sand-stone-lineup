@@ -1,3 +1,6 @@
+alert("JS YÜKLENDİ");
+
+
 const points = document.querySelectorAll(".point");
 const popup = document.getElementById("popup");
 const popupTitle = document.getElementById("popupTitle");
