@@ -46,6 +46,64 @@
   </div>
 </div>
 
+<!-- MENU -->
+<div class="menu" id="mapMenu">
+  <h3 data-text="mapsTitle">Haritalar</h3>
+  <button class="mapBtn inactive" data-text="mapDune">Dune – Yakında</button>
+  <button class="mapBtn inactive" data-text="mapRust">Rust – Yakında</button>
+  <button class="mapBtn inactive" data-text="mapZone">Zone 7 – Yakında</button>
+  <hr>
+  <h4 data-text="themesTitle">Nitro Temalar</h4>
+  <div class="theme-buttons">
+    <button class="themeBtn red" data-theme="theme-red">Kırmızı Nitro</button>
+    <button class="themeBtn blue" data-theme="theme-blue">Mavi Nitro</button>
+    <button class="themeBtn green" data-theme="theme-green">Yeşil Nitro</button>
+  </div>
+  <hr>
+  <h4 data-text="filterTitle">Noktalar</h4>
+  <button onclick="filterPoints('flash')" data-text="flash">Flash</button>
+  <button onclick="filterPoints('molly')" data-text="molly">Molly</button>
+  <button onclick="filterPoints('smoke')" data-text="smoke">Smoke</button>
+  <button onclick="filterPoints('grenade')" data-text="grenade">Grenade</button>
+  <button onclick="filterPoints('all')" data-text="allPoints">Hepsi</button>
+  <button class="closeMenu" id="closeMenu" data-text="close">Kapat</button>
+</div>
+
+<!-- TUTORIAL -->
+<div class="tutorial" id="tutorial">
+  <div class="tutorial-card">
+    <h3 data-text="tutorialTitle">Nasıl Kullanılır?</h3>
+    <p id="tutorialText">
+      1. Noktalara tıklayın.<br>
+      2. Video otomatik açılır.<br>
+      3. Popup’u kapatmak için çarpıya tıklayın.<br>
+      4. Menüden temayı ve filtreleri değiştirebilirsiniz.<br>
+      5. Reklam duvarlarına tıklarsanız TikTok hesabına yönlendirilirsiniz.
+    </p>
+    <button id="closeTutorial" data-text="gotIt">Tamam</button>
+  </div>
+</div>
+
+<!-- ALT TEMA SEÇİMİ -->
+<div class="theme-bar">
+  <button id="lightThemeBtn">Beyaz Tema</button>
+  <button id="darkThemeBtn" class="dark">Siyah Tema</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <div class="popup-header">
+      <span id="popupTitle">Video</span>
+      <button id="closePopup">×</button>
+    </div>
+    <div id="popupVideo"></div>
+  </div>
+</div>
+
 <!-- MENÜ -->
 <div class="menu" id="mapMenu">
   <h3 data-text="mapsTitle">Haritalar</h3>
