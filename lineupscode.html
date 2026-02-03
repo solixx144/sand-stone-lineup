@@ -3,87 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Oyun</title>
+<title>Mini Oyun Profesyonel</title>
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    color: #000;
-}
-canvas {
-    display: block;
-    margin: 60px auto 0 auto;
-    border: 1px solid #000;
-}
-/* Ayarlar butonu */
-.settings {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    font-size: 30px;
-    cursor: pointer;
-    z-index: 15;
-}
-/* Video ekranı */
-.video-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 20;
-}
-.video-container iframe {
-    width: 80%;
-    height: 80%;
-}
-/* Tutorial popup */
-.tutorial {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #f2f2f2;
-    border: 2px solid #000;
-    padding: 20px;
-    display: none;
-    z-index: 25;
-}
-.tutorial button {
-    margin-top: 10px;
-}
-/* Ayarlar popup */
-#settingsPopup {
-    display:none;
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:#fff;
-    border:2px solid #000;
-    padding:20px;
-    z-index:30;
-}
-#settingsPopup button {
-    margin:5px;
-}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:Arial, sans-serif; background:#fff; color:#000; display:flex; flex-direction:column; min-height:100vh; }
+/* Header */
+header { display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff; padding:10px 20px; flex-shrink:0; }
+header h1 { font-size:1.3rem; cursor:pointer; }
+header button { font-size:1rem; cursor:pointer; padding:5px 10px; }
+/* Main */
+main { flex:1; display:flex; justify-content:center; align-items:center; padding:20px; }
+canvas { border:2px solid #000; max-width:100%; height:auto; background:#eee; }
+/* Ayarlar Popup */
+#settingsPopup { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border:2px solid #000; padding:20px; z-index:50; }
+#settingsPopup button { margin:5px; cursor:pointer; }
+/* Video/Görsel overlay */
+.video-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:40; }
+.video-container iframe, .video-container img { width:80%; height:80%; }
+/* Tutorial */
+.tutorial { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#f2f2f2; border:2px solid #000; padding:20px; z-index:60; display:none; }
+.tutorial button { margin:5px; }
+/* Reklam */
+.ad { position:absolute; background:rgba(255,255,0,0.7); color:#000; font-weight:bold; text-align:center; line-height:50px; cursor:pointer; border:1px solid #000; }
+/* Responsive */
+@media(max-width:1024px){ main{flex-direction:column;} }
+@media(max-width:768px){ header h1{font-size:1rem;} header button{font-size:0.9rem;} }
+@media(max-width:480px){ header{flex-direction:column;align-items:flex-start;} header h1{margin-bottom:5px;} }
 </style>
 </head>
 <body>
-<!-- Ayarlar -->
-<div class="settings" id="settings">☰</div>
 
-<!-- Canvas Mini Map -->
-<canvas id="gameCanvas"></canvas>
+<header>
+    <h1 id="sandStoneTitle">Sand Stone</h1>
+    <button id="settingsBtn">☰ Ayarlar</button>
+</header>
 
-<!-- Video Container -->
+<main>
+    <canvas id="gameCanvas"></canvas>
+</main>
+
+<!-- Video / Görsel Container -->
 <div class="video-container" id="videoContainer">
     <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
+    <img id="fullImage" src="" style="display:none; max-width:90%; max-height:90%;">
 </div>
 
 <!-- Tutorial -->
@@ -91,16 +53,23 @@ canvas {
     <h2>Nasıl Oynanır?</h2>
     <p>Mini mapte kırmızı noktaları tıklayın. Video yoksa "Yakında Gelecek 🚀" göreceksiniz.</p>
     <p>Sol üstten ayarlara girip tema değiştirebilirsiniz.</p>
-    <p>Hata bulursanız "Hata Bildir" butonuna basabilirsiniz.</p>
     <button id="closeTutorial">Tamam</button>
 </div>
 
 <!-- Ayarlar Popup -->
 <div id="settingsPopup">
-    <h2>Ayarlar</h2>
+    <h2>Ayarlar & Haritalar</h2>
     <p>Tema Seçimi:</p>
     <button id="themeLight">🌞 Beyaz Tema</button>
     <button id="themeDark">🌙 Siyah Tema</button>
+    <br><br>
+    <p>Haritalar:</p>
+    <button class="mapBtn">Dune</button>
+    <button class="mapBtn">Rust</button>
+    <button class="mapBtn">Zone 7</button>
+    <button class="mapBtn">Hanami</button>
+    <button class="mapBtn">Province</button>
+    <button class="mapBtn">Breeze</button>
     <br><br>
     <button id="reportError">Hata Bildir</button>
     <br><br>
@@ -111,135 +80,91 @@ canvas {
 // Tutorial
 const tutorial = document.getElementById('tutorial');
 const closeTutorial = document.getElementById('closeTutorial');
-tutorial.style.display = 'block';
-closeTutorial.addEventListener('click', () => tutorial.style.display = 'none');
+tutorial.style.display='block';
+closeTutorial.addEventListener('click',()=>tutorial.style.display='none');
 
-// Canvas ve responsive
+// Canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width=window.innerWidth*0.8; canvas.height=window.innerHeight*0.6; drawMap(currentMap); }
+window.addEventListener('resize',resizeCanvas);
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth * 0.9;
-    canvas.height = window.innerHeight * 0.7;
-    drawMap(currentMap);
-}
-window.addEventListener('resize', resizeCanvas);
+// Mini map
+const miniMapImg=new Image();
+miniMapImg.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10';
 
-// Mini map görseli
-const miniMapImg = new Image();
-miniMapImg.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10';
+// Map ve zigzag noktaları
+const map1=[{x:100,y:150,width:50,height:50,videoUrl:''},{x:400,y:300,width:50,height:50,videoUrl:'https://www.youtube.com/embed/dQw4w9WgXcQ'}];
+const zigzagSpots=[{x:300,y:200,radius:10,videoUrl:'',color:'red'},{x:500,y:150,radius:10,videoUrl:'https://www.youtube.com/embed/dQw4w9WgXcQ',color:'orange'},{x:200,y:350,radius:10,videoUrl:'',color:'purple'}];
+let currentMap=map1;
 
-// Mini mapler
-const map1 = [
-    { x: 100, y: 150, width: 50, height: 50, videoUrl: '' },
-    { x: 400, y: 300, width: 50, height: 50, videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
-];
-const map2 = [
-    { x: 150, y: 200, width: 50, height: 50, videoUrl: '' },
-    { x: 500, y: 350, width: 50, height: 50, videoUrl: '' }
-];
-
-// Zigzag noktası
-const zigzagSpot = { x: 300, y: 200, radius: 10, videoUrl: '' };
-
-let currentMap = map1;
+// Reklamlar
+const ads=[{x:0,y:10,width:100,height:50,link:'https://www.tiktok.com/@solixx144',text:'REKLAM'},{x:0,y:70,width:100,height:50,link:'https://www.example.com',text:'LINK'}];
 
 // Harita çizimi
-function drawMap(mapSpots) {
+function drawMap(mapSpots){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    if(miniMapImg.complete) {
-        ctx.drawImage(miniMapImg, 0, 0, canvas.width, canvas.height);
-    }
-
-    // Noktalar
-    mapSpots.forEach(spot => {
-        ctx.beginPath();
-        ctx.arc(spot.x + spot.width/2, spot.y + spot.height/2, 10, 0, Math.PI*2);
-        ctx.fillStyle = 'red';
-        ctx.fill();
-    });
-
-    // Zigzag noktası
-    ctx.beginPath();
-    ctx.arc(zigzagSpot.x, zigzagSpot.y, zigzagSpot.radius, 0, Math.PI*2);
-    ctx.fillStyle = 'red';
-    ctx.fill();
-
-    // Reklam
+    if(miniMapImg.complete){ ctx.drawImage(miniMapImg,0,0,canvas.width,canvas.height); }
+    mapSpots.forEach(spot=>{ ctx.beginPath(); ctx.arc(spot.x+spot.width/2,spot.y+spot.height/2,10,0,Math.PI*2); ctx.fillStyle='red'; ctx.fill(); });
+    zigzagSpots.forEach(spot=>{ ctx.beginPath(); ctx.arc(spot.x,spot.y,spot.radius,0,Math.PI*2); ctx.fillStyle=spot.color; ctx.fill(); });
     drawAds();
 }
+function drawAds(){ ads.forEach(ad=>{ ad.x = canvas.width - ad.width - 10; ctx.fillStyle='rgba(255,255,0,0.7)'; ctx.fillRect(ad.x,ad.y,ad.width,ad.height); ctx.fillStyle='#000'; ctx.font='14px Arial'; ctx.fillText(ad.text,ad.x+15,ad.y+30); }); }
 
-// Reklam çizimi
-function drawAds() {
-    ctx.fillStyle = 'rgba(255,255,0,0.6)';
-    ctx.fillRect(canvas.width - 110, 10, 100, 50);
-    ctx.fillStyle = '#000';
-    ctx.font = '14px Arial';
-    ctx.fillText('REKLAM', canvas.width - 75, 40);
+// Video / Görsel açma
+const videoContainer=document.getElementById('videoContainer');
+const videoPlayer=document.getElementById('videoPlayer');
+const fullImage=document.getElementById('fullImage');
+function openVideo(url){ 
+    if(!url){ alert('Yakında Gelecek 🚀'); return; }
+    videoPlayer.style.display='block';
+    fullImage.style.display='none';
+    videoPlayer.src=url;
+    videoContainer.style.display='flex';
 }
-
-miniMapImg.onload = () => drawMap(currentMap);
-
-// Video açma
-const videoContainer = document.getElementById('videoContainer');
-const videoPlayer = document.getElementById('videoPlayer');
-function openVideo(url) {
-    if(!url) { alert('Yakında Gelecek 🚀'); return; }
-    videoPlayer.src = url;
-    videoContainer.style.display = 'flex';
-}
-videoContainer.addEventListener('click', () => {
-    videoContainer.style.display = 'none';
-    videoPlayer.src = '';
+videoContainer.addEventListener('click',()=>{
+    videoContainer.style.display='none';
+    videoPlayer.src='';
 });
 
-// Tıklama
-canvas.addEventListener('click', (e) => {
-    const mouseX = e.offsetX;
-    const mouseY = e.offsetY;
-
-    currentMap.forEach(spot => {
-        if(mouseX >= spot.x && mouseX <= spot.x + spot.width &&
-           mouseY >= spot.y && mouseY <= spot.y + spot.height) {
-               openVideo(spot.videoUrl);
-        }
-    });
-
-    // Zigzag noktası tıklama
-    const dx = mouseX - zigzagSpot.x;
-    const dy = mouseY - zigzagSpot.y;
-    if(Math.sqrt(dx*dx + dy*dy) <= zigzagSpot.radius) {
-        openVideo(zigzagSpot.videoUrl);
-    }
+// Canvas tıklama
+canvas.addEventListener('click',e=>{
+    const mouseX=e.offsetX;
+    const mouseY=e.offsetY;
+    let clicked=false;
+    currentMap.forEach(spot=>{ if(mouseX>=spot.x && mouseX<=spot.x+spot.width && mouseY>=spot.y && mouseY<=spot.y+spot.height){ openVideo(spot.videoUrl); clicked=true; } });
+    zigzagSpots.forEach(spot=>{ const dx=mouseX-spot.x, dy=mouseY-spot.y; if(Math.sqrt(dx*dx+dy*dy)<=spot.radius){ openVideo(spot.videoUrl); clicked=true; } });
+    ads.forEach(ad=>{ if(mouseX>=ad.x && mouseX<=ad.x+ad.width && mouseY>=ad.y && mouseY<=ad.y+ad.height){ window.open(ad.link,'_blank'); clicked=true; } });
+    if(!clicked && currentMap===map1){ alert('Yakında Gelecek 🚀'); }
 });
 
-// Ayarlar
-const settings = document.getElementById('settings');
-const settingsPopup = document.getElementById('settingsPopup');
-const closeSettings = document.getElementById('closeSettings');
-const themeLight = document.getElementById('themeLight');
-const themeDark = document.getElementById('themeDark');
-const reportError = document.getElementById('reportError');
+// Ayarlar ve haritalar
+const settingsBtn=document.getElementById('settingsBtn');
+const settingsPopup=document.getElementById('settingsPopup');
+const closeSettings=document.getElementById('closeSettings');
+const themeLight=document.getElementById('themeLight');
+const themeDark=document.getElementById('themeDark');
+const reportError=document.getElementById('reportError');
 
-settings.addEventListener('click', () => { settingsPopup.style.display = 'block'; });
-closeSettings.addEventListener('click', () => { settingsPopup.style.display = 'none'; });
+settingsBtn.addEventListener('click',()=>settingsPopup.style.display='block');
+closeSettings.addEventListener('click',()=>settingsPopup.style.display='none');
+themeLight.addEventListener('click',()=>{ document.body.style.backgroundColor='#fff'; document.body.style.color='#000'; settingsPopup.style.backgroundColor='#fff'; settingsPopup.style.color='#000'; });
+themeDark.addEventListener('click',()=>{ document.body.style.backgroundColor='#222'; document.body.style.color='#fff'; settingsPopup.style.backgroundColor='#333'; settingsPopup.style.color='#fff'; });
+reportError.addEventListener('click',()=>{ window.open('https://www.tiktok.com/@solixx144','_blank'); alert("Hata bildirmek için TikTok DM atabilirsiniz!"); });
 
-themeLight.addEventListener('click', () => {
-    document.body.style.backgroundColor = '#fff';
-    document.body.style.color = '#000';
+// Haritalar menüsü (Yakında)
+document.querySelectorAll('.mapBtn').forEach(btn=>btn.addEventListener('click',()=>{ alert('Yakında Gelecek 🚀'); }));
+
+// Sand Stone başlığı
+const sandStoneTitle = document.getElementById('sandStoneTitle');
+sandStoneTitle.addEventListener('click',()=>{
+    videoPlayer.style.display='none';
+    fullImage.style.display='block';
+    fullImage.src=miniMapImg.src;
+    videoContainer.style.display='flex';
 });
-themeDark.addEventListener('click', () => {
-    document.body.style.backgroundColor = '#222';
-    document.body.style.color = '#fff';
-});
 
-reportError.addEventListener('click', () => {
-    window.open('https://www.tiktok.com/@solixx144', '_blank');
-    alert("Hata bildirmek için TikTok DM atabilirsiniz!");
-});
-
-// Başlangıç boyut
+// Başlangıç
 resizeCanvas();
 </script>
 </body>
