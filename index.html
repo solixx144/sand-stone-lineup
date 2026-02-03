@@ -8,16 +8,15 @@
 </head>
 <body class="light">
 
-<!-- SABİT REKLAMLAR -->
-<a href="https://www.tiktok.com/@solixx144" target="_blank" class="ad-banner left">REKLAM</a>
-<a href="https://www.tiktok.com/@solixx144" target="_blank" class="ad-banner right">REKLAM</a>
+<!-- SABİT REKLAM DUVARLARI -->
+<a href="https://www.tiktok.com/@solixx144" target="_blank" class="ad-wall left"></a>
+<a href="https://www.tiktok.com/@solixx144" target="_blank" class="ad-wall right"></a>
 
 <header>
   <h1>Sand Stone Lineup</h1>
   <button id="menuBtn">☰</button>
 </header>
 
-<!-- HARİTA + NOKTALAR -->
 <main>
   <div class="map-container">
     <img class="map" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
@@ -35,6 +34,60 @@
     <div class="point smoke" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" style="left:55%;top:75%"></div>
 
     <!-- GRENADE NOKTALARI -->
+    <div class="point grenade" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" style="left:40%;top:20%"></div>
+    <div class="point grenade" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" style="left:45%;top:25%"></div>
+  </div>
+</main>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <div class="popup-header">
+      <span id="popupTitle">Video</span>
+      <button id="closePopup">×</button>
+    </div>
+    <div id="popupVideo"></div>
+  </div>
+</div>
+
+<!-- MENÜ -->
+<div class="menu" id="mapMenu">
+  <h3>Haritalar</h3>
+  <button class="mapBtn inactive">Dune – Yakında</button>
+  <button class="mapBtn inactive">Rust – Yakında</button>
+  <button class="mapBtn inactive">Zone 7 – Yakında</button>
+  <button class="mapBtn inactive">Hanami – Yakında</button>
+  <button class="mapBtn inactive">Province – Yakında</button>
+  <button class="mapBtn inactive">Breeze – Yakında</button>
+  <hr>
+  <h4>Temalar</h4>
+  <button class="themeBtn" data-theme="light">Açık Tema</button>
+  <button class="themeBtn" data-theme="dark">Koyu Tema</button>
+  <button class="themeBtn" data-theme="red">Kırmızı Tema</button>
+  <button class="themeBtn" data-theme="blue">Mavi Tema</button>
+  <button class="themeBtn" data-theme="green">Yeşil Tema</button>
+  <hr>
+  <h4>Noktalar</h4>
+  <button onclick="filterPoints('flash')">Flash</button>
+  <button onclick="filterPoints('molly')">Molly</button>
+  <button onclick="filterPoints('smoke')">Smoke</button>
+  <button onclick="filterPoints('grenade')">Grenade</button>
+  <button onclick="filterPoints('all')">Hepsi</button>
+  <button class="closeMenu" id="closeMenu">Kapat</button>
+</div>
+
+<!-- TUTORIAL -->
+<div class="tutorial" id="tutorial">
+  <div class="tutorial-card">
+    <h3>Nasıl Kullanılır?</h3>
+    <p>Noktalara tıkla → video açılır</p>
+    <button id="closeTutorial">Tamam</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>    <!-- GRENADE NOKTALARI -->
     <div class="point grenade" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" style="left:40%;top:20%"></div>
     <div class="point grenade" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ" style="left:45%;top:25%"></div>
   </div>
