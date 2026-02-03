@@ -4,117 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sand Stone Lineup</title>
-
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#fff;color:#000;min-height:100vh}
-
-/* Banner */
-#topBanner{
-position:fixed;top:0;left:0;width:100%;
-background:yellow;color:black;
-text-align:center;padding:10px;
-font-weight:bold;cursor:pointer;z-index:1000}
-
-/* Header */
-header{
-margin-top:45px;
-display:flex;justify-content:space-between;
-align-items:center;
-background:#222;color:#fff;
-padding:10px 20px}
-
-/* Main */
-main{
-display:flex;justify-content:center;
-align-items:center;padding:20px}
-
-/* Mini map */
-#miniMapContainer{position:relative}
-#miniMap{
-width:90vw;max-width:800px;
-border:2px solid #000;
-border-radius:10px}
-
-/* Kırmızı nokta */
-.red-dot{
-position:absolute;width:14px;height:14px;
-background:red;border-radius:50%;
-border:2px solid white;
-transform:translate(-50%,-50%);
-cursor:pointer}
-
-/* Grenade menü */
-#grenadeMenu{
-display:none;position:fixed;
-top:50%;left:50%;
-transform:translate(-50%,-50%);
-background:#111;padding:15px;
-border-radius:10px;z-index:300}
-
-#grenadeMenu h3{
-color:white;text-align:center;margin-bottom:8px}
-
-#grenadeMenu button{
-width:100%;margin:5px 0;
-padding:8px;background:#222;
-color:white;border:none;
-border-radius:6px;cursor:pointer}
-
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#111;color:#fff;min-height:100vh}
+.ad-banner{display:block;background:#ffcc00;color:#000;text-align:center;padding:12px;text-decoration:none;font-weight:bold;cursor:pointer}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px}
+header select{margin-left:10px;padding:5px;background:#222;color:#fff;border:none;border-radius:5px;cursor:pointer}
+.menu-btn{font-size:26px;cursor:pointer}
+nav{display:none;background:#1b1b1b}
+nav div{padding:12px;border-top:1px solid #333;cursor:pointer}
+main{padding:15px;text-align:center}
+.map-container{position:relative;max-width:800px;margin:auto}
+.map{width:100%;border-radius:10px;border:2px solid #000}
+.red-dot{position:absolute;width:14px;height:14px;background:red;border-radius:50%;border:2px solid white;transform:translate(-50%,-50%);cursor:pointer}
+#grenadeMenu{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:15px;border-radius:10px;z-index:300}
+#grenadeMenu h3{color:white;text-align:center;margin-bottom:8px}
+#grenadeMenu button{width:100%;margin:5px 0;padding:8px;background:#222;color:white;border:none;border-radius:6px;cursor:pointer}
 #grenadeMenu button:hover{background:red}
-
-/* Video popup */
-#videoPopup{
-display:none;position:fixed;
-top:50%;left:50%;
-transform:translate(-50%,-50%);
-background:black;padding:10px;
-border-radius:10px;z-index:400}
-
-#videoPopup iframe{
-width:320px;height:180px}
-
-#videoPopup button{
-width:100%;margin-top:6px}
-
-/* Ayarlar */
-#settingsPopup{
-display:none;position:fixed;
-top:50%;left:50%;
-transform:translate(-50%,-50%);
-background:white;padding:20px;
-border-radius:10px;z-index:300}
-
-/* Tutorial */
-#tutorial{
-position:fixed;top:50%;left:50%;
-transform:translate(-50%,-50%);
-background:#f2f2f2;padding:20px;
-border-radius:10px;z-index:500}
+#videoPopup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:black;padding:10px;border-radius:10px;z-index:400}
+#videoPopup iframe{width:320px;height:180px}
+#videoPopup button{width:100%;margin-top:6px}
+#settingsPopup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border-radius:10px;z-index:300}
+#tutorial{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#f2f2f2;padding:20px;border-radius:10px;z-index:500;color:#000}
 </style>
 </head>
-
 <body>
 
-<div id="topBanner">REKLAM – TIKLA</div>
+<a href="#" id="adBanner" class="ad-banner">REKLAM ALANI</a>
 
 <header>
-<h1>Sand Stone Lineup</h1>
-<button id="settingsBtn">☰</button>
+<h1 id="sandstone">Sand Stone Lineup</h1>
+<div>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+<select id="languageSelect">
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+<option value="ru">Русский</option>
+</select>
+</div>
 </header>
 
-<main>
-<div id="miniMapContainer">
-<img id="miniMap" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10">
+<nav id="menu">
+<div onclick="yakinda()">Dune</div>
+<div onclick="yakinda()">Rust</div>
+<div onclick="yakinda()">Zone 7</div>
+<div onclick="yakinda()">Hanami</div>
+<div onclick="yakinda()">Province</div>
+<div onclick="yakinda()">Breeze</div>
+</nav>
 
-<!-- ANA NOKTALAR -->
+<main>
+<div class="map-container">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10" class="map">
+
+<!-- Mini map noktaları -->
 <div class="red-dot" id="marketDot" style="left:58%;top:62%"></div>
 <div class="red-dot" id="aSiteDot" style="left:25%;top:40%"></div>
 <div class="red-dot" id="bSiteDot" style="left:78%;top:35%"></div>
 </div>
 </main>
 
-<!-- Grenade Menü -->
+<!-- Grenade Menu -->
 <div id="grenadeMenu">
 <h3 id="menuTitle">Market</h3>
 <button data-type="smoke">Smoke</button>
@@ -122,7 +74,7 @@ border-radius:10px;z-index:500}
 <button data-type="molly">Molly</button>
 </div>
 
-<!-- Video -->
+<!-- Video Popup -->
 <div id="videoPopup">
 <iframe id="videoFrame" allowfullscreen></iframe>
 <button id="closeVideo">Kapat</button>
@@ -130,7 +82,7 @@ border-radius:10px;z-index:500}
 
 <!-- Ayarlar -->
 <div id="settingsPopup">
-<h3>Ayarlar</h3>
+<h3 id="settingsTitle">Ayarlar</h3>
 <button id="lightTheme">Beyaz Tema</button>
 <button id="darkTheme">Siyah Tema</button>
 <hr>
@@ -153,57 +105,85 @@ border-radius:10px;z-index:500}
 </div>
 
 <script>
-// Banner
-topBanner.onclick=()=>window.open("https://www.tiktok.com/@solixx144","_blank");
+// Reklam banner
+const ads=["https://www.tiktok.com/@solixx144","https://www.youtube.com/","https://example.com"];
+let currentAd=0;
+const adBanner=document.getElementById("adBanner");
+adBanner.onclick=()=>{window.open(ads[currentAd],"_blank"); currentAd=(currentAd+1)%ads.length};
 
-// Ayarlar
-settingsBtn.onclick=()=>settingsPopup.style.display="block";
-
-// Tema
-lightTheme.onclick=()=>document.body.style.background="#fff";
-darkTheme.onclick=()=>document.body.style.background="#222";
+// Menü
+function toggleMenu(){
+const menu=document.getElementById("menu");
+menu.style.display=(menu.style.display==="block")?"none":"block";
+}
 
 // Haritalar -> Yakında
-document.querySelectorAll(".mapBtn")
-.forEach(b=>b.onclick=()=>alert("Yakında 🚧"));
+function yakinda(){
+const lang=document.getElementById("languageSelect").value;
+const texts={tr:"Yakında 🚧",en:"Coming soon",ru:"Скоро"};
+alert(texts[lang]);
+}
 
-// Grenade sistemi
-const videos={
-Market:{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
-"A Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
-"B Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",
-molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
+// Dil Seçimi
+const langSelect=document.getElementById("languageSelect");
+const texts={
+tr:{header:"Sand Stone Lineup",tutorial:"Kırmızı noktalara tıkla → grenade seç → video izle",lightTheme:"Beyaz Tema",darkTheme:"Siyah Tema",smoke:"Smoke",flash:"Flash",molly:"Molly"},
+en:{header:"Sand Stone Lineup",tutorial:"Click red dots → select grenade → watch video",lightTheme:"Light Theme",darkTheme:"Dark Theme",smoke:"Smoke",flash:"Flash",molly:"Molly"},
+ru:{header:"Sand Stone Lineup",tutorial:"Нажмите на красные точки → выберите гранату → смотрите видео",lightTheme:"Светлая тема",darkTheme:"Темная тема",smoke:"Дымовая",flash:"Флеш",molly:"Молли"}
 };
+langSelect.onchange=()=>{
+const lang=langSelect.value;
+document.getElementById("sandstone").innerText=texts[lang].header;
+document.getElementById("tutorial").querySelector("p").innerText=texts[lang].tutorial;
+document.getElementById("lightTheme").innerText=texts[lang].lightTheme;
+document.getElementById("darkTheme").innerText=texts[lang].darkTheme;
+document.querySelectorAll("#grenadeMenu button").forEach(btn=>{
+if(btn.dataset.type==="smoke") btn.innerText=texts[lang].smoke;
+if(btn.dataset.type==="flash") btn.innerText=texts[lang].flash;
+if(btn.dataset.type==="molly") btn.innerText=texts[lang].molly;
+});
+}
 
+// Tema
+document.getElementById("lightTheme").onclick=()=>document.body.style.background="#fff";
+document.getElementById("darkTheme").onclick=()=>document.body.style.background="#222";
+
+// Grenade sistemi ve videolar
+const videos={
+Market:{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+"A Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+"B Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
+};
 let currentArea="Market";
 
-marketDot.onclick=()=>openMenu("Market");
-aSiteDot.onclick=()=>openMenu("A Site");
-bSiteDot.onclick=()=>openMenu("B Site");
+document.getElementById("marketDot").onclick=()=>openMenu("Market");
+document.getElementById("aSiteDot").onclick=()=>openMenu("A Site");
+document.getElementById("bSiteDot").onclick=()=>openMenu("B Site");
 
 function openMenu(area){
 currentArea=area;
-menuTitle.innerText=area;
-grenadeMenu.style.display="block";
+document.getElementById("menuTitle").innerText=area;
+document.getElementById("grenadeMenu").style.display="block";
 }
 
-document.querySelectorAll("#grenadeMenu button")
-.forEach(btn=>{
+document.querySelectorAll("#grenadeMenu button").forEach(btn=>{
 btn.onclick=()=>{
-videoFrame.src=videos[currentArea][btn.dataset.type]+"?autoplay=1";
-videoPopup.style.display="block";
-grenadeMenu.style.display="none";
-}});
+document.getElementById("videoFrame").src=videos[currentArea][btn.dataset.type]+"?autoplay=1";
+document.getElementById("videoPopup").style.display="block";
+document.getElementById("grenadeMenu").style.display="none";
+}
+});
 
-closeVideo.onclick=()=>{
-videoPopup.style.display="none";
-videoFrame.src="";
+// Video kapatma
+document.getElementById("closeVideo").onclick=()=>{
+document.getElementById("videoFrame").src="";
+document.getElementById("videoPopup").style.display="none";
 };
+
+// PWA Service Worker
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js");
+}
 </script>
 
 </body>
