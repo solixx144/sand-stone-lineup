@@ -19,6 +19,7 @@ main{padding:15px;text-align:center}
 .map-container{position:relative;max-width:800px;margin:auto}
 .map{width:100%;border-radius:10px;border:2px solid #000}
 .red-dot{position:absolute;width:20px;height:20px;background:red;border-radius:50%;border:2px solid white;transform:translate(-50%,-50%);text-align:center;color:white;font-weight:bold;line-height:18px;cursor:pointer}
+.red-dot .icon { pointer-events:none; font-size:12px; position:absolute; top:-20px; }
 #grenadeMenu{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:15px;border-radius:10px;z-index:300}
 #grenadeMenu h3{color:white;text-align:center;margin-bottom:8px}
 #grenadeMenu button{width:100%;margin:5px 0;padding:8px;background:#222;color:white;border:none;border-radius:6px;cursor:pointer}
@@ -59,14 +60,27 @@ main{padding:15px;text-align:center}
 <div class="map-container">
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGnQmTu2-0yu6rQSVa_4l7w18-6h8tYl3hQRy7deax1w&s=10" class="map">
 
-<!-- Mini map noktaları -->
-<div class="red-dot" id="marketDot" style="left:55%;top:60%">X</div> 
-<div class="red-dot" id="aSiteDot" style="left:22%;top:38%">X</div> 
-<div class="red-dot" id="bSiteDot" style="left:78%;top:33%">X</div>
+<!-- Noktalar doğru yerlerde (yaklaşık yüzde) -->
+<div class="red-dot" id="marketDot" style="left:50%;top:70%">X
+  <div class="icon smoke">💨</div>
+  <div class="icon flash" style="left:12px">⚡</div>
+  <div class="icon molly" style="left:24px">🔥</div>
+</div>
+
+<div class="red-dot" id="aSiteDot" style="left:25%;top:40%">X
+  <div class="icon smoke">💨</div>
+  <div class="icon flash" style="left:12px">⚡</div>
+  <div class="icon molly" style="left:24px">🔥</div>
+</div>
+
+<div class="red-dot" id="bSiteDot" style="left:75%;top:35%">X
+  <div class="icon smoke">💨</div>
+  <div class="icon flash" style="left:12px">⚡</div>
+  <div class="icon molly" style="left:24px">🔥</div>
+</div>
 </div>
 </main>
 
-<!-- Grenade Menu -->
 <div id="grenadeMenu">
 <div style="text-align:right"><span id="closeMenu" style="cursor:pointer;font-weight:bold;font-size:20px">X</span></div>
 <h3 id="menuTitle">Market</h3>
@@ -75,13 +89,11 @@ main{padding:15px;text-align:center}
 <button data-type="molly">Molly</button>
 </div>
 
-<!-- Video Popup -->
 <div id="videoPopup">
 <iframe id="videoFrame" allowfullscreen></iframe>
 <button id="closeVideo">Kapat</button>
 </div>
 
-<!-- Tutorial -->
 <div id="tutorial">
 <h3>Nasıl Kullanılır?</h3>
 <p>Kırmızı noktalara tıkla → grenade seç → video izle</p>
@@ -111,9 +123,9 @@ alert(texts[lang]);
 // Dil Seçimi
 const langSelect=document.getElementById("languageSelect");
 const texts={
-tr:{header:"Sand Stone Lineup",tutorial:"Kırmızı noktalara tıkla → grenade seç → video izle",lightTheme:"Beyaz Tema",darkTheme:"Siyah Tema",smoke:"Smoke",flash:"Flash",molly:"Molly"},
-en:{header:"Sand Stone Lineup",tutorial:"Click red dots → select grenade → watch video",lightTheme:"Light Theme",darkTheme:"Dark Theme",smoke:"Smoke",flash:"Flash",molly:"Molly"},
-ru:{header:"Sand Stone Lineup",tutorial:"Нажмите на красные точки → выберите гранату → смотрите видео",lightTheme:"Светлая тема",darkTheme:"Темная тема",smoke:"Дымовая",flash:"Флеш",molly:"Молли"}
+tr:{header:"Sand Stone Lineup",tutorial:"Kırmızı noktalara tıkla → grenade seç → video izle",smoke:"Smoke",flash:"Flash",molly:"Molly"},
+en:{header:"Sand Stone Lineup",tutorial:"Click red dots → select grenade → watch video",smoke:"Smoke",flash:"Flash",molly:"Molly"},
+ru:{header:"Sand Stone Lineup",tutorial:"Нажмите на красные точки → выберите гранату → смотрите видео",smoke:"Дымовая",flash:"Флеш",molly:"Молли"}
 };
 langSelect.onchange=()=>{
 const lang=langSelect.value;
@@ -126,18 +138,13 @@ if(btn.dataset.type==="molly") btn.innerText=texts[lang].molly;
 });
 }
 
-// Tema
-document.getElementById("lightTheme")?.addEventListener("click",()=>document.body.style.background="#fff");
-document.getElementById("darkTheme")?.addEventListener("click",()=>document.body.style.background="#222");
-
-// Grenade sistemi ve videolar
+// Grenade sistemi
 const videos={
 Market:{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
 "A Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
 "B Site":{smoke:"https://www.youtube.com/embed/dQw4w9WgXcQ",flash:"https://www.youtube.com/embed/dQw4w9WgXcQ",molly:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
 };
 let currentArea="Market";
-
 document.getElementById("marketDot").onclick=()=>openMenu("Market");
 document.getElementById("aSiteDot").onclick=()=>openMenu("A Site");
 document.getElementById("bSiteDot").onclick=()=>openMenu("B Site");
@@ -148,7 +155,6 @@ document.getElementById("menuTitle").innerText=area;
 document.getElementById("grenadeMenu").style.display="block";
 }
 
-// Grenade butonları -> video aç
 document.querySelectorAll("#grenadeMenu button").forEach(btn=>{
 btn.onclick=()=>{
 document.getElementById("videoFrame").src=videos[currentArea][btn.dataset.type]+"?autoplay=1";
