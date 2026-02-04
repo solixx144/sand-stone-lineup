@@ -1,94 +1,58 @@
-:root{
-  --topbar:48px;
-  --ad-width:60px;
-  --grid-size:25px; /* SNAP = 25px */
+body {
+  margin: 0;
+  font-family: Arial;
 }
 
-/* reset */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{font-family:Inter, Arial, sans-serif; background:#0b0f14;color:#fff;overflow:hidden}
-
-/* THEMES */
-.theme-light{background:#f5f5f5;color:#111}
-.theme-dark{background:#0b0f14;color:#fff}
-
-/* TOP BAR */
-.top-bar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar);
-  display:flex;justify-content:space-between;align-items:center;
-  padding:0 12px;background:rgba(0,0,0,0.55);z-index:1000;
-}
-.top-bar button{cursor:pointer;margin-right:6px;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:6px;color:inherit}
-
-/* ADS (sağ/sol) — HARİTAYI KAPATMAZ */
-.ad-wall{
-  position:fixed;top:var(--topbar);bottom:var(--topbar);
-  width:var(--ad-width);background:linear-gradient(90deg,#ffd500,#ffe96b);
-  z-index:50;cursor:pointer;
-}
-.ad-wall.left{left:0}
-.ad-wall.right{right:0}
-
-/* MAP WRAPPER — harita burada ortalanır, reklam boşlukları hesaba katılır */
-.map-wrapper{
-  position:absolute;
-  top:var(--topbar);
-  bottom:0;
-  left:calc(var(--ad-width) + 12px);
-  right:calc(var(--ad-width) + 12px);
-  display:flex;justify-content:center;align-items:center;overflow:hidden;
-  background:transparent;
+.dark {
+  background: #000;
+  color: #fff;
 }
 
-/* MAP IMAGE */
-#map{
-  max-width:100%;
-  max-height:100%;
-  object-fit:contain;
-  display:block;
-  image-rendering: optimizeQuality;
+.light {
+  background: #fff;
+  color: #000;
 }
 
-/* POINTS container (absolutely positioned over the map) */
-#points{
-  position:absolute;inset:0;pointer-events:none; /* per-point pointer-events enabled */
-  z-index:120;
+.topbar {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
 }
 
-/* DOT (visible marker) */
-.dot{
-  position:absolute;
-  width:20px;height:20px;border-radius:50%;
-  transform:translate(-50%,-50%);
-  display:block;
-  box-shadow:0 6px 18px rgba(0,0,0,0.45);
-  pointer-events:auto; /* enable interaction */
-  cursor:pointer;
-  animation:pulse 1.6s infinite ease-in-out;
+#map-container {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  overflow: hidden;
 }
 
-/* pulse only scale (no sway) */
-@keyframes pulse{0%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.35)}100%{transform:translate(-50%,-50%) scale(1)}}
+#map {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-/* TYPE COLORS */
-.smoke{background:#9aa0a6;border:2px solid #6f7376}
-.flash{background:#ffffff;border:2px dashed #d1d1d1}
-.molly{background:#ff4d4d;border:2px solid #ff9900}
-.grenade{background:#5a6b2d;border:2px solid #39461d}
+.point {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  background: red;
+  border-radius: 3px;
+  touch-action: none;
+  z-index: 10;
+}
 
-/* POPUP */
-.popup{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);z-index:2000}
-.popup.hidden{display:none}
-.popup-inner{width:92%;max-width:900px;background:#000;padding:12px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-.video-wrap{width:100%;height:0;padding-bottom:56.25%;position:relative}
-.video-wrap iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0}
-.close-btn{position:absolute;right:18px;top:10px;background:#222;border:none;color:#fff;padding:6px 8px;border-radius:6px;cursor:pointer}
+.smoke { background: gray; }
+.flash { background: yellow; }
+.molly { background: orange; }
 
-/* small screens adjustments */
-@media (max-width:800px){
-  :root{--ad-width:36px}
-  .top-bar{padding:0 8px}
-  .dot{width:16px;height:16px}
-  .popup-inner{max-width:92%}
+#grid {
+  position: absolute;
+  inset: 0;
+  background-size: 30px 30px;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.1) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 1;
 }
