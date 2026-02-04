@@ -1,58 +1,110 @@
-body {
-  margin: 0;
-  font-family: Arial;
+/* REPLACE ENTIRE style.css WITH THIS (tablet/mobile-friendly, fixes centering/z-index) */
+
+/* reset */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;font-family:Arial,Helvetica,sans-serif}
+
+/* theme */
+body.theme-dark, body.dark { background:#0b0f14; color:#fff; }
+body.theme-light, body.light { background:#f5f5f5; color:#111; }
+
+/* top bar (admin header) */
+.top-bar, #topBar { position:fixed; top:8px; left:8px; right:8px; z-index:1200; display:flex; justify-content:space-between; align-items:center; gap:8px; padding:6px 8px; background:rgba(0,0,0,0.5); border-radius:8px; }
+
+/* AD WALLS: hide on small/tablet screens so they don't shove map */
+.ad-wall{
+  position:fixed; top:64px; bottom:64px; width:60px; background:linear-gradient(90deg,#ffd500,#ffe96b); z-index:60;
+}
+.ad-wall.left{ left:0; }
+.ad-wall.right{ right:0; }
+
+/* MAP WRAPPER: center map, take available width, account for ad-wall on large screens */
+.map-wrapper{
+  position:relative;
+  width: calc(100vw - 120px); /* leave room for ads by default */
+  max-width:1100px;
+  height: calc(100vh - 140px);
+  margin: 72px auto; /* top spacing for header, centers horizontally */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
 }
 
-.dark {
-  background: #000;
-  color: #fff;
+/* For small widths (tablet/phone), hide ad-walls and let map use full width */
+@media (max-width: 1100px){
+  .ad-wall{ display:none; }
+  .map-wrapper{ width: 94vw; margin: 64px auto; height: calc(100vh - 128px); }
 }
 
-.light {
-  background: #fff;
-  color: #000;
-}
-
-.topbar {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-}
-
-#map-container {
-  position: relative;
-  width: 100vw;
-  height: calc(100vh - 60px);
-  overflow: hidden;
-}
-
+/* MAP IMAGE: responsive, centered */
 #map {
-  width: 100%;
-  height: 100%;
+  display:block;
+  width: 90%;
+  max-width: 720px;
+  height: auto;
   object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none; /* map image itself should not capture touch/mouse */
+  z-index:1;
+  border-radius:6px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.6);
 }
 
-.point {
-  width: 14px;
-  height: 14px;
-  position: absolute;
-  background: red;
-  border-radius: 3px;
-  touch-action: none;
-  z-index: 10;
-}
-
-.smoke { background: gray; }
-.flash { background: yellow; }
-.molly { background: orange; }
-
-#grid {
-  position: absolute;
-  inset: 0;
-  background-size: 30px 30px;
+/* GRID OVERLAY (visual) */
+.grid-overlay, #gridOverlay, #grid {
+  position:absolute; inset:0; z-index:2; pointer-events:none;
   background-image:
-    linear-gradient(to right, rgba(255,255,255,.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,.1) 1px, transparent 1px);
-  pointer-events: none;
-  z-index: 1;
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 25px 25px;
+  mix-blend-mode: overlay;
+}
+
+/* POINTS LAYER MUST BE ABOVE MAP & GRID and accept pointer events */
+#pointsLayer, .points-layer {
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:auto; /* critical: allow clicking/touching dots */
+}
+
+/* Draggable dot style */
+.draggable-dot, .dot, .point {
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:auto; /* critical */
+  touch-action: none;   /* enable touch move handling by JS */
+  box-shadow:0 8px 22px rgba(0,0,0,0.6);
+}
+
+/* types */
+.draggable-dot.smoke, .point.smoke { background:#9aa0a6; border:2px solid #6f7376; }
+.draggable-dot.flash, .point.flash { background:#ffffff; border:2px dashed #d1d1d1; }
+.draggable-dot.molly, .point.molly { background:#ff4d4d; border:2px solid #ff9900; }
+.draggable-dot.grenade, .point.grenade { background:#5a6b2d; border:2px solid #39461d; }
+
+/* small screens: make dots slightly smaller */
+@media (max-width:700px){
+  .draggable-dot, .point { width:16px; height:16px; }
+}
+
+/* Admin UI (aside) */
+.admin-ui{ position:fixed; right:12px; top:74px; width:300px; max-width:40vw; z-index:1300; background:rgba(0,0,0,0.78); padding:10px; border-radius:8px; color:#fff; }
+
+/* simple buttons */
+button, select, input { font-size:14px }
+
+/* popup (if any) keep topmost */
+.popup { position:fixed; inset:0; z-index:2000; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.75); }
+.popup.hidden{ display:none; }
+
+/* Utility: center left controls if admin header collides */
+@media(max-width:540px){
+  .top-bar{ left:8px; right:8px; }
+  .admin-ui{ right:8px; left:8px; bottom:8px; top:auto; width:auto; max-width:90vw; }
 }
