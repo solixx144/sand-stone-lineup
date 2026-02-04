@@ -1,28 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin — Sandstone Editor</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body class="dark">
+<body class="theme-dark">
 
-<h2>Admin Panel</h2>
+<header class="top-bar">
+  <div style="font-weight:700">ADMIN PANEL</div>
+  <div><a href="./index.html" target="_blank">Siteyi Aç</a></div>
+</header>
 
-<select id="type">
-  <option value="smoke">Smoke</option>
-  <option value="flash">Flash</option>
-  <option value="molly">Molly</option>
-</select>
+<!-- AD WALLS -->
+<a class="ad-wall left" href="https://www.tiktok.com/@solixx144" target="_blank" aria-label="Reklam sol"></a>
+<a class="ad-wall right" href="https://www.tiktok.com/@solixx144" target="_blank" aria-label="Reklam sağ"></a>
 
-<input id="video" placeholder="Video link">
-<button onclick="addPoint()">Nokta Ekle</button>
+<main id="mapWrapper" class="map-wrapper" style="padding-top:0;">
+  <img id="mapImage" src="map.png" alt="Sandstone map">
+  <div id="grid" class="grid-overlay"></div>
+  <div id="pointsLayer" class="points-layer"></div>
+</main>
 
-<div id="map-container">
-  <img src="map.png" id="map">
-  <div id="grid"></div>
-</div>
+<aside class="admin-ui" role="region" aria-label="Admin controls">
+  <label>Tür</label>
+  <select id="typeSelect">
+    <option value="smoke">Smoke</option>
+    <option value="flash">Flash</option>
+    <option value="molly">Molly</option>
+    <option value="grenade">Grenade</option>
+  </select>
+
+  <label>Video (embed link veya mp4)</label>
+  <input id="videoInput" type="text" placeholder="https://www.youtube.com/embed/..." />
+
+  <div style="display:flex;gap:8px;margin-top:10px;">
+    <button id="addPointBtn">➕ Nokta Ekle</button>
+    <button id="toggleGridBtn">📐 Grid Gizle</button>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="exportBtn">⬇ Export</button>
+    <button id="importBtn">⬆ Import</button>
+    <input id="importFile" type="file" accept=".json" style="display:none"/>
+  </div>
+
+  <p class="hint">Snap: <strong>15px</strong>. Haritaya dokun → nokta ekle. Çift dokun düzenle. Uzun bas sil.</p>
+</aside>
 
 <script src="app.js"></script>
 </body>
