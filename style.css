@@ -1,95 +1,87 @@
-:root{
-  --ad-width-desktop:80px;
-  --grid-size:15px; /* SNAP = 15 */
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
-/* reset */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;width:100%;font-family:Inter, Arial, sans-serif}
-
-/* THEMES */
-body.theme-dark, body.dark { background:#0b0f14; color:#fff; }
-body.theme-light, body.light { background:#f5f5f5; color:#111; }
-
-/* TOP BAR */
-.top-bar{
-  position:fixed; top:8px; left:8px; right:8px; z-index:1400;
-  display:flex; justify-content:space-between; align-items:center;
-  gap:8px; padding:6px 10px; background:rgba(0,0,0,0.45); border-radius:8px;
-}
-.top-bar .left-controls button, .top-bar .right-controls button, .top-bar .admin-link{
-  background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:6px;color:inherit;cursor:pointer;
-}
-
-/* AD WALLS */
-.ad-wall{
-  position:fixed; top:72px; bottom:72px; width:var(--ad-width-desktop); z-index:60;
-  background: linear-gradient(90deg,#ffd500,#ffe96b);
-}
-.ad-wall.left{ left:0; }
-.ad-wall.right{ right:0; }
-
-/* MAP WRAPPER */
-.map-wrapper{
-  position:relative;
-  width: calc(100vw - (var(--ad-width-desktop) * 2));
-  max-width:1100px;
+#mapWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
   aspect-ratio: 1 / 1;
-  margin: 88px auto;
-  display:flex; align-items:center; justify-content:center;
-  background: transparent; z-index:10;
+  margin: auto;
 }
 
-/* small screens: hide ads and use full width */
-@media (max-width:1100px){
-  .ad-wall{ display:none; }
-  .map-wrapper{ width:94vw; margin:72px auto; max-width:820px; }
+#mapImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-/* MAP IMAGE */
-#mapImage{ width:100%; height:100%; object-fit:contain; display:block; pointer-events:none; border-radius:8px; box-shadow:0 8px 28px rgba(0,0,0,0.6); }
+#pointsLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
 
-/* GRID overlay (visual) */
-.grid-overlay, #grid {
-  position:absolute; inset:0; z-index:2; pointer-events:none;
+.point {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+}
+
+.point.smoke { background: #9ca3af; }
+.point.flash { background: #fff; border: 2px dashed #fff; }
+.point.molly { background: #ff3b3b; border: 2px solid orange; }
+.point.grenade { background: #556b2f; }
+
+#grid {
+  position: absolute;
+  inset: 0;
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
-  mix-blend-mode: overlay;
-  border-radius:8px;
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 15px 15px;
+  z-index: 10;
+  pointer-events: none;
 }
 
-/* POINTS LAYER must be above grid */
-.points-layer {
-  position:absolute; inset:0; z-index:5; pointer-events:auto;
+#adminPanel {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  background: rgba(0,0,0,0.8);
+  padding: 10px;
+  border-radius: 8px;
 }
 
-/* POINTS styles (kare-like) */
-.point, .draggable-dot {
-  position:absolute; transform:translate(-50%,-50%);
-  width:16px; height:16px; border-radius:4px; box-shadow:0 8px 18px rgba(0,0,0,0.6);
-  display:block; pointer-events:auto; touch-action:none; cursor:grab;
+.ad-wall {
+  position: fixed;
+  top: 0;
+  width: 40px;
+  height: 100vh;
+  background: yellow;
+  z-index: 1;
 }
 
-/* TYPE COLORS */
-.point.smoke, .draggable-dot.smoke { background:#9aa0a6; border:2px solid #6f7376; }    /* grey */
-.point.flash, .draggable-dot.flash { background:#ffffff; border:2px dashed #d1d1d1; }  /* white/dashed */
-.point.molly, .draggable-dot.molly { background:#ff4d4d; border:2px solid #ff9900; }    /* red/orange */
-.point.grenade, .draggable-dot.grenade { background:#5a6b2d; border:2px solid #39461d; } /* army green */
+.ad-wall.left { left: 0; }
+.ad-wall.right { right: 0; }
 
-/* admin UI */
-.admin-ui{ position:fixed; right:12px; top:74px; width:300px; max-width:40vw; z-index:1500; background:rgba(0,0,0,0.8); padding:10px; border-radius:8px; color:#fff; }
+#videoModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 200;
+}
 
-/* popup */
-.popup{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:2000; background:rgba(0,0,0,0.75); }
-.popup.hidden{ display:none; }
-.popup-inner{ width:92%; max-width:900px; background:#000; padding:12px; border-radius:8px; }
-.video-wrap{ position:relative; width:100%; height:0; padding-bottom:56.25%; }
-.video-wrap iframe{ position:absolute; left:0; top:0; width:100%; height:100%; border:0; }
-
-/* small screens */
-@media(max-width:600px){
-  .admin-ui{ right:8px; left:8px; bottom:8px; top:auto; width:auto; max-width:94vw; }
-  .point{ width:14px; height:14px; border-radius:4px; }
+#videoFrame {
+  width: 90%;
+  height: 90%;
+  margin: 5%;
 }
