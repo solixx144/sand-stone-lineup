@@ -1,44 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Sandstone Lineups</title>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandstone Lineup</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-dark">
+<body class="dark">
 
-<header class="top-bar">
-  <div class="left-controls">
-    <button id="btnAll">Tümü</button>
-    <button data-type="smoke" class="filterBtn">Smoke</button>
-    <button data-type="flash" class="filterBtn">Flash</button>
-    <button data-type="molly" class="filterBtn">Molly</button>
-    <button data-type="grenade" class="filterBtn">Grenade</button>
-  </div>
-  <div class="right-controls">
-    <button id="themeToggle">🌙</button>
-    <a class="admin-link" href="./admin.html" target="_blank">Admin</a>
-  </div>
-</header>
+<div class="ad-wall left" onclick="openAd()"></div>
 
-<!-- AD WALLS -->
-<a class="ad-wall left" href="https://www.tiktok.com/@solixx144" target="_blank" aria-label="Reklam sol"></a>
-<a class="ad-wall right" href="https://www.tiktok.com/@solixx144" target="_blank" aria-label="Reklam sağ"></a>
+<div id="mapWrapper">
+  <img id="mapImage" src="map.png">
+  <div id="pointsLayer"></div>
+</div>
 
-<!-- MAP -->
-<main id="mapWrapper" class="map-wrapper">
-  <img id="mapImage" src="map.png" alt="Sandstone map">
-  <div id="grid" class="grid-overlay" aria-hidden="true"></div>
-  <div id="pointsLayer" class="points-layer" aria-hidden="false"></div>
-</main>
+<div class="ad-wall right" onclick="openAd()"></div>
 
-<!-- VIDEO POPUP -->
-<div id="popup" class="popup hidden" role="dialog" aria-hidden="true">
-  <div class="popup-inner">
-    <button id="closePopup" class="close-btn">✖</button>
-    <div class="video-wrap"><iframe id="popupVideo" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
-  </div>
+<div id="videoModal" onclick="closeVideo()">
+  <iframe id="videoFrame" allowfullscreen></iframe>
 </div>
 
 <script src="app.js"></script>
