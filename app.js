@@ -1,26 +1,38 @@
-const points = document.querySelectorAll('.point');
-const popup = document.getElementById('popup');
-const video = document.getElementById('video');
-const filterButtons = document.querySelectorAll('.filters button');
+let currentType = 'smoke';
+const pointsDiv = document.getElementById('points');
 
-points.forEach(p => {
-  p.addEventListener('click', () => {
-    video.src = p.dataset.video;
-    popup.style.display = 'flex';
-  });
-});
-
-function closePopup(){
-  popup.style.display = 'none';
-  video.src = '';
+function setType(type) {
+  currentType = type;
+  document.querySelectorAll('.point').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.' + type).forEach(p => p.style.display = 'block');
 }
 
-/* FİLTRE */
-filterButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.type;
-    points.forEach(p => {
-      p.style.display = p.classList.contains(type) ? 'block' : 'none';
-    });
-  });
+function clearPoints() {
+  pointsDiv.innerHTML = '';
+}
+
+pointsDiv.addEventListener('click', e => {
+  const rect = pointsDiv.getBoundingClientRect();
+  const point = document.createElement('div');
+  point.className = 'point ' + currentType;
+  point.style.left = (e.clientX - rect.left) + 'px';
+  point.style.top = (e.clientY - rect.top) + 'px';
+  point.onclick = openVideo;
+  pointsDiv.appendChild(point);
 });
+
+function openVideo(e) {
+  e.stopPropagation();
+  document.getElementById('videoPopup').classList.remove('hidden');
+}
+function closeVideo() {
+  document.getElementById('videoPopup').classList.add('hidden');
+}
+
+// Menü
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.onclick = () => document.getElementById('sideMenu').classList.toggle('hidden');
+
+// Tema
+document.getElementById('darkBtn').onclick = () => document.body.className = 'theme-dark';
+document.getElementById('lightBtn').onclick = () => document.body.className = 'theme-light';
