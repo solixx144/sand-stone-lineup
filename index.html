@@ -1,49 +1,46 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sandstone Lineup</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="dark">
+<body class="theme-dark">
 
-  <!-- ÜST BAR -->
-  <div class="top-bar">
-    <div>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="left-controls">
+      <button onclick="filterType('all')">Tümü</button>
       <button onclick="filterType('smoke')">Smoke</button>
       <button onclick="filterType('flash')">Flash</button>
       <button onclick="filterType('molly')">Molly</button>
       <button onclick="filterType('grenade')">Grenade</button>
     </div>
-    <div>
-      <button id="lockBtn">🔒 Kilitle</button>
-      <button id="clearBtn">🧹 Temizle</button>
-      <button onclick="toggleTheme()">🌙 / ⭐</button>
+
+    <div class="right-controls">
+      <button id="themeToggle">🌙</button>
+      <a href="/admin.html" target="_blank" title="Admin (sadece sen)">Admin</a>
     </div>
-  </div>
+  </header>
 
-  <!-- REKLAM DUVARLARI -->
-  <div class="ad-wall left"></div>
-  <div class="ad-wall right"></div>
+  <!-- AD WALLS -->
+  <div class="ad-wall left" title="TikTok"></div>
+  <div class="ad-wall right" title="TikTok"></div>
 
-  <!-- HARİTA -->
-  <div class="map-wrapper">
-    <img id="map" src="map.png" alt="Sandstone Map">
-    <div id="points">
-      <!-- ÖRNEK NOKTALAR -->
-      <div class="dot smoke" style="left:40%;top:45%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-      <div class="dot flash" style="left:55%;top:30%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-      <div class="dot molly" style="left:60%;top:60%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-      <div class="dot grenade" style="left:35%;top:65%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-    </div>
-  </div>
+  <!-- MAP AREA -->
+  <main class="map-wrapper">
+    <img id="map" src="map.png" alt="Sandstone mini map" />
+    <div id="points"></div>
+  </main>
 
-  <!-- POPUP -->
-  <div id="popup" class="popup hidden">
+  <!-- POPUP VIDEO -->
+  <div id="popup" class="popup hidden" role="dialog" aria-hidden="true">
     <div class="popup-inner">
-      <button id="closePopup">❌</button>
-      <iframe id="video" src="" allowfullscreen></iframe>
+      <button id="closePopup" class="close-btn">✖</button>
+      <div class="video-wrap">
+        <iframe id="popupVideo" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
     </div>
   </div>
 
