@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+body {
+  background: #0b0d14;
+  color: white;
+  font-family: sans-serif;
+}
+button {
+  padding: 10px;
+  margin: 5px;
+}
+</style>
+</head>
+<body>
+
+<h2>ADMIN – NOKTA EKLE</h2>
+<button onclick="addDot()">➕ Nokta Ekle</button>
+<button onclick="clearDots()">🧹 Temizle</button>
+
+<script>
+function addDot() {
+  const dots = JSON.parse(localStorage.getItem("dots") || "[]");
+  dots.push({ x: 200, y: 200 });
+  localStorage.setItem("dots", JSON.stringify(dots));
+}
+
+function clearDots() {
+  localStorage.removeItem("dots");
+}
+</script>
+
+</body>
+</html>
