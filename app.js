@@ -1,74 +1,71 @@
-// app.js — ana site
-const STORAGE_KEY = 'st_points_v1'; // localStorage key
-const pointsContainer = document.getElementById('points');
-const popup = document.getElementById('popup');
-const popupVideo = document.getElementById('popupVideo');
-const closePopupBtn = document.getElementById('closePopup');
-const themeToggle = document.getElementById('themeToggle');
+let locked = false;
+let points = JSON.parse(localStorage.getItem("points") || "[]");
 
-// load and render points from localStorage
-function loadPoints() {
-  pointsContainer.innerHTML = '';
-  let list = [];
-  try { list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e){ list = []; }
-  list.forEach(pt => {
-    const el = document.createElement('div');
-    el.className = 'dot ' + pt.type;
-    // use percent positions (left/top)
-    el.style.left = pt.left;
-    el.style.top = pt.top;
-    el.dataset.video = pt.video || '';
-    el.title = pt.type;
-    // click opens popup
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const src = el.dataset.video || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
-      popupVideo.src = src;
-      popup.classList.remove('hidden');
-      popup.setAttribute('aria-hidden','false');
+const mapContainer = document.getElementById("map-container");
+
+function save() {
+  localStorage.setItem("points", JSON.stringify(points));
+}
+
+function render() {
+  document.querySelectorAll(".point").forEach(p => p.remove());
+  points.forEach((p, i) => {
+    const d = document.createElement("div");
+    d.className = `point ${p.type}`;
+    d.style.left = p.x + "px";
+    d.style.top = p.y + "px";
+
+    let offsetX, offsetY;
+
+    d.addEventListener("touchstart", e => {
+      if (locked) return;
+      const t = e.touches[0];
+      offsetX = t.clientX - d.offsetLeft;
+      offsetY = t.clientY - d.offsetTop;
     });
-    pointsContainer.appendChild(el);
+
+    d.addEventListener("touchmove", e => {
+      if (locked) return;
+      const t = e.touches[0];
+      let x = t.clientX - offsetX;
+      let y = t.clientY - offsetY;
+
+      x = Math.round(x / 30) * 30;
+      y = Math.round(y / 30) * 30;
+
+      d.style.left = x + "px";
+      d.style.top = y + "px";
+
+      points[i].x = x;
+      points[i].y = y;
+      save();
+    });
+
+    d.onclick = () => {
+      if (p.video) window.open(p.video);
+    };
+
+    mapContainer.appendChild(d);
   });
 }
 
-// filter by type (or all)
-function filterType(type){
-  const dots = document.querySelectorAll('#points .dot');
-  if(type === 'all'){
-    dots.forEach(d => d.style.display = 'block');
-    return;
-  }
-  dots.forEach(d => d.style.display = d.classList.contains(type) ? 'block' : 'none');
+function addPoint() {
+  const type = document.getElementById("type").value;
+  const video = document.getElementById("video").value;
+
+  points.push({ x: 60, y: 60, type, video });
+  save();
+  render();
 }
 
-// close popup
-if(closePopupBtn){
-  closePopupBtn.addEventListener('click', ()=>{
-    popup.classList.add('hidden');
-    popupVideo.src = '';
-    popup.setAttribute('aria-hidden','true');
-  });
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  document.body.classList.toggle("dark");
 }
 
-// listen storage events (admin tab will write to localStorage)
-window.addEventListener('storage', (e)=>{
-  if(e.key === STORAGE_KEY){
-    loadPoints();
-  }
-});
-
-// initial load
-loadPoints();
-
-// theme toggle
-if(themeToggle){
-  themeToggle.addEventListener('click', ()=>{
-    document.body.classList.toggle('theme-light');
-    document.body.classList.toggle('theme-dark');
-  });
+function toggleLock() {
+  locked = !locked;
+  alert(locked ? "Kilitledin" : "Kilit Açık");
 }
 
-// ad-wall clicks (open tiktok)
-document.querySelectorAll('.ad-wall').forEach(a=>{
-  a.addEventListener('click', ()=> window.open('https://www.tiktok.com/@solixx144','_blank'));
-});
+render();
