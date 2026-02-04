@@ -1,47 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin — Sandstone Editor</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    /* admin-specific small overrides */
-    .admin-ui{position:fixed;right:12px;top:64px;width:320px;background:rgba(0,0,0,0.8);padding:12px;border-radius:8px;z-index:1500}
-    .admin-ui label{display:block;margin-top:8px;font-size:13px}
-    .admin-ui input[type="text"], .admin-ui select{width:100%;padding:6px;margin-top:6px;border-radius:6px;border:1px solid #222;background:#111;color:#fff}
-    .admin-ui button{margin-top:8px;padding:8px 10px;border-radius:6px;background:#1b6;padding:0 8px;border:none;cursor:pointer}
-    .grid-overlay{
-      position:absolute;inset:0;pointer-events:none;z-index:115;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: var(--grid-size) var(--grid-size);
-      mix-blend-mode: overlay;
-    }
-    .draggable-dot{position:absolute;width:20px;height:20px;border-radius:50%;transform:translate(-50%,-50%);cursor:grab;z-index:130}
-    .draggable-dot.dragging{cursor:grabbing;opacity:.95;box-shadow:0 12px 30px rgba(0,0,0,0.6)}
-    /* small note */
-    .hint{font-size:12px;opacity:.8;margin-top:6px}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Sandstone Editor</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  /* admin küçük ek stiller */
+  .admin-ui{
+    position:fixed; right:12px; top:64px; width:320px;
+    background:rgba(0,0,0,0.85); padding:12px; border-radius:8px;
+    z-index:2000; color:#fff; font-family:Arial, sans-serif;
+  }
+  .admin-ui label{display:block;margin-top:8px;font-size:13px}
+  .admin-ui input[type="text"], .admin-ui select{width:100%;padding:8px;margin-top:6px;border-radius:6px;border:1px solid #222;background:#0b0d10;color:#fff}
+  .admin-ui button{margin-top:8px;padding:8px 10px;border-radius:6px;background:#1b6;color:#000;border:none;cursor:pointer}
+  .hint{font-size:12px;opacity:.85;margin-top:8px}
+  /* grid overlay */
+  #gridOverlay{
+    position:absolute; inset:0; pointer-events:none; z-index:150;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    mix-blend-mode: overlay;
+  }
+  .draggable-dot{
+    position:absolute; width:20px; height:20px; border-radius:50%;
+    transform:translate(-50%,-50%); cursor:grab; z-index:180;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+  }
+  .draggable-dot.dragging{cursor:grabbing;opacity:.95}
+  .controls-row{display:flex;gap:8px;margin-top:8px}
+  .small-btn{padding:6px 8px;background:#222;border-radius:6px;border:none;color:#fff;cursor:pointer}
+</style>
 </head>
 <body class="theme-dark">
-
-  <header class="top-bar">
-    <div>ADMIN — Sandstone Editor</div>
-    <div><a href="./index.html" target="_blank">Açık siteyi gör</a></div>
+  <header class="top-bar" style="z-index:2100;padding:10px 14px;">
+    <div style="font-weight:700;color:#fff">ADMIN — Sandstone Editor</div>
+    <div><a href="index.html" target="_blank" style="color:#fff">Ana siteyi aç</a></div>
   </header>
 
+  <!-- ad walls (aynı stilde ana sayfa ile) -->
   <div class="ad-wall left"></div>
   <div class="ad-wall right"></div>
 
-  <main class="map-wrapper" id="adminMapWrapper">
-    <img id="map" src="map.png" alt="map" />
+  <!-- map area -->
+  <main id="adminMapWrapper" class="map-wrapper" style="z-index:100">
+    <img id="map" src="map.png" alt="map" style="display:block;max-width:100%;max-height:100%;object-fit:contain"/>
     <div id="pointsLayer"></div>
-    <div id="gridOverlay" class="grid-overlay" style="display:block"></div>
+    <div id="gridOverlay"></div>
   </main>
 
-  <aside class="admin-ui">
+  <!-- admin UI -->
+  <aside class="admin-ui" aria-label="Admin controls">
     <label>Tür</label>
     <select id="typeSelect">
       <option value="smoke">Smoke</option>
@@ -50,242 +62,238 @@
       <option value="grenade">Grenade</option>
     </select>
 
-    <label>Video URL (YouTube embed veya mp4)</label>
-    <input id="videoInput" type="text" placeholder="https://www.youtube.com/embed/..." />
+    <label>Video (YouTube embed veya mp4 link)</label>
+    <input id="videoInput" placeholder="https://www.youtube.com/embed/..." type="text"/>
 
-    <button id="addPointBtn">➕ Nokta Ekle</button>
-    <button id="toggleGridBtn">📐 Grid Gizle</button>
-    <button id="saveBtn">💾 Kaydet (Ana siteye yansır)</button>
-    <button id="exportBtn">⬇ Export JSON</button>
-    <button id="importBtn">⬆ Import JSON</button>
-    <input type="file" id="importFile" style="display:none" accept=".json" />
+    <div class="controls-row">
+      <button id="addPointBtn" class="small-btn">➕Ekle</button>
+      <button id="toggleGridBtn" class="small-btn">📐 Grid Gizle</button>
+    </div>
 
-    <div class="hint">Snap: 25px. Mobilde sürükleme kapalı.</div>
+    <div class="controls-row">
+      <button id="saveBtn" class="small-btn">💾 Kaydet</button>
+      <button id="exportBtn" class="small-btn">⬇ Export</button>
+      <button id="importBtn" class="small-btn">⬆ Import</button>
+      <input id="importFile" type="file" accept=".json" style="display:none"/>
+    </div>
+
+    <div class="hint">Snap: <strong>25px</strong>. Mobilde sürükleme otomatik kapalı.</div>
+    <div class="hint" style="margin-top:10px">— Çift tık: düzenle, sağ tık: sil.</div>
   </aside>
 
 <script>
-/* Admin panel script */
-const STORAGE_KEY = 'st_points_v1';
-const gridSize = 25; // C seçimi
-const pointsLayer = document.getElementById('pointsLayer');
-const mapImg = document.getElementById('map');
-const addPointBtn = document.getElementById('addPointBtn');
-const saveBtn = document.getElementById('saveBtn');
-const exportBtn = document.getElementById('exportBtn');
-const importBtn = document.getElementById('importBtn');
-const importFile = document.getElementById('importFile');
-const toggleGridBtn = document.getElementById('toggleGridBtn');
-const gridOverlay = document.getElementById('gridOverlay');
-const typeSelect = document.getElementById('typeSelect');
-const videoInput = document.getElementById('videoInput');
+/* Robust admin script — pointer events, 25px snap, localStorage sync */
+document.addEventListener('DOMContentLoaded', ()=>{
 
-let dragState = { dragging: false, el: null, offsetX:0, offsetY:0 };
-let isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+  const STORAGE_KEY = 'st_points_v1';
+  const GRID = 25;
+  const mapImg = document.getElementById('map');
+  const pointsLayer = document.getElementById('pointsLayer');
+  const addPointBtn = document.getElementById('addPointBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+  const toggleGridBtn = document.getElementById('toggleGridBtn');
+  const gridOverlay = document.getElementById('gridOverlay');
+  const typeSelect = document.getElementById('typeSelect');
+  const videoInput = document.getElementById('videoInput');
 
-// load existing points
-function getStored(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ return [] } }
-function setStored(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); /* triggers storage event for main site */ }
+  // set grid css size
+  document.documentElement.style.setProperty('--grid-size', GRID + 'px');
 
-// convert pixel to percent relative to map wrapper
-function pxToPercent(xPx, yPx){
-  const rect = mapImg.getBoundingClientRect();
-  const left = xPx - rect.left;
-  const top = yPx - rect.top;
-  const cx = Math.max(0, Math.min(left, rect.width));
-  const cy = Math.max(0, Math.min(top, rect.height));
-  return { left: (cx / rect.width * 100).toFixed(4) + '%', top: (cy / rect.height * 100).toFixed(4) + '%' };
-}
+  const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 
-// convert percent to pixel (for placing draggable DOM)
-function percentToPx(leftPct, topPct){
-  const rect = mapImg.getBoundingClientRect();
-  const lx = parseFloat(leftPct) / 100 * rect.width + rect.left;
-  const ty = parseFloat(topPct) / 100 * rect.height + rect.top;
-  return { x: lx, y: ty };
-}
+  // helpers
+  function getStored(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e){ return [] } }
+  function setStored(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); /* triggers storage event */ }
 
-// snap a pixel position to grid relative to map rect
-function snapToGrid(clientX, clientY){
-  const rect = mapImg.getBoundingClientRect();
-  const relX = clientX - rect.left;
-  const relY = clientY - rect.top;
-  const snappedX = Math.round(relX / gridSize) * gridSize;
-  const snappedY = Math.round(relY / gridSize) * gridSize;
-  // clamp
-  const clampedX = Math.max(0, Math.min(snappedX, rect.width));
-  const clampedY = Math.max(0, Math.min(snappedY, rect.height));
-  return { x: rect.left + clampedX, y: rect.top + clampedY };
-}
+  function rect(){ return mapImg.getBoundingClientRect(); }
 
-// render all stored points as draggable dots
-function renderStored(){
-  pointsLayer.innerHTML = '';
-  const list = getStored();
-  list.forEach((pt, idx) => {
-    const el = document.createElement('div');
-    el.className = 'draggable-dot ' + pt.type;
-    el.style.left = pt.left;
-    el.style.top = pt.top;
-    el.dataset.index = idx;
-    el.dataset.video = pt.video || '';
-    el.title = pt.type + (pt.video ? ' (video)' : '');
-    // allow click to edit
-    el.addEventListener('dblclick', (e)=>{
-      e.stopPropagation();
-      // load into controls
-      typeSelect.value = pt.type;
-      videoInput.value = pt.video || '';
-      // mark active for editing deletion
-      document.querySelectorAll('.draggable-dot').forEach(x=>x.style.outline='');
-      el.style.outline = '2px solid #ffd';
-      el.dataset.edit = '1';
-    });
-    // drag handlers
-    if(!isMobile){
-      el.addEventListener('mousedown', (e)=>{
-        e.preventDefault();
-        dragState.dragging = true;
-        dragState.el = el;
-        // compute pointer offset so cursor remains center-ish
-        const rect = el.getBoundingClientRect();
-        dragState.offsetX = e.clientX - rect.left - rect.width/2;
-        dragState.offsetY = e.clientY - rect.top - rect.height/2;
-        el.classList.add('dragging');
+  function pxToPercentAbs(clientX, clientY){
+    const r = rect();
+    const relX = Math.max(0, Math.min(clientX - r.left, r.width));
+    const relY = Math.max(0, Math.min(clientY - r.top, r.height));
+    return { left: (relX / r.width * 100).toFixed(4) + '%', top: (relY / r.height * 100).toFixed(4) + '%' };
+  }
+  function percentToClient(leftPct, topPct){
+    const r = rect();
+    const x = r.left + (parseFloat(leftPct) / 100 * r.width);
+    const y = r.top + (parseFloat(topPct) / 100 * r.height);
+    return { x, y };
+  }
+  function snapClient(clientX, clientY){
+    const r = rect();
+    const relX = Math.max(0, Math.min(clientX - r.left, r.width));
+    const relY = Math.max(0, Math.min(clientY - r.top, r.height));
+    const snappedX = Math.round(relX / GRID) * GRID;
+    const snappedY = Math.round(relY / GRID) * GRID;
+    return { x: r.left + snappedX, y: r.top + snappedY };
+  }
+
+  // render stored points as draggable elements
+  function renderStored(){
+    pointsLayer.innerHTML = '';
+    const list = getStored();
+    list.forEach((pt, idx) => {
+      const el = document.createElement('div');
+      el.className = 'draggable-dot ' + pt.type;
+      el.style.left = pt.left;
+      el.style.top = pt.top;
+      el.dataset.index = idx;
+      el.dataset.video = pt.video || '';
+      el.title = pt.type + (pt.video ? ' (video)' : '');
+      // double click edits
+      el.addEventListener('dblclick', (e)=>{
+        e.stopPropagation();
+        typeSelect.value = pt.type;
+        videoInput.value = pt.video || '';
+        // mark this element as edit target
+        document.querySelectorAll('.draggable-dot').forEach(x=>x.style.outline='');
+        el.style.outline = '2px solid #ffd';
+        el.dataset.edit = '1';
       });
-    }
-    // right-click to delete
-    el.addEventListener('contextmenu', (ev)=>{
-      ev.preventDefault();
-      if(confirm('Bu noktayı sil?')){
-        const arr = getStored();
-        arr.splice(idx,1);
-        setStored(arr);
-        renderStored();
+      // right-click deletes
+      el.addEventListener('contextmenu', (ev)=>{
+        ev.preventDefault();
+        if(confirm('Noktayı silmek istiyor musun?')){
+          const arr = getStored(); arr.splice(idx,1); setStored(arr); renderStored();
+        }
+      });
+
+      // pointer based drag for mouse & touch
+      if(!isMobile){
+        el.addEventListener('pointerdown', (ev)=>{
+          ev.preventDefault();
+          el.setPointerCapture(ev.pointerId);
+          el.classList.add('dragging');
+          // move handler
+          const onMove = (m) => {
+            const snapped = snapClient(m.clientX, m.clientY);
+            const pct = pxToPercentAbs(snapped.x, snapped.y);
+            el.style.left = pct.left;
+            el.style.top = pct.top;
+          };
+          const onUp = (u) => {
+            el.releasePointerCapture(ev.pointerId);
+            el.classList.remove('dragging');
+            document.removeEventListener('pointermove', onMove);
+            document.removeEventListener('pointerup', onUp);
+            // save final pos
+            const idx2 = parseInt(el.dataset.index,10);
+            if(!isNaN(idx2)){
+              const arr = getStored();
+              arr[idx2].left = el.style.left;
+              arr[idx2].top = el.style.top;
+              arr[idx2].video = el.dataset.video || arr[idx2].video || '';
+              setStored(arr);
+              renderStored(); // re-render to update indices
+            }
+          };
+          document.addEventListener('pointermove', onMove);
+          document.addEventListener('pointerup', onUp);
+        });
+      } else {
+        // mobile: disable dragging (to avoid accidental moves) — but we support tap-to-add instead
+        el.style.touchAction = 'none';
       }
+
+      pointsLayer.appendChild(el);
     });
-
-    pointsLayer.appendChild(el);
-  });
-}
-
-// on mousemove for dragging
-document.addEventListener('mousemove', (e)=>{
-  if(!dragState.dragging || !dragState.el) return;
-  const snapped = snapToGrid(e.clientX - dragState.offsetX, e.clientY - dragState.offsetY);
-  const pct = pxToPercent(snapped.x, snapped.y);
-  dragState.el.style.left = pct.left;
-  dragState.el.style.top = pct.top;
-});
-
-// stop drag and save final pos
-document.addEventListener('mouseup', ()=>{
-  if(dragState.dragging && dragState.el){
-    dragState.el.classList.remove('dragging');
-    // save new positions back to storage
-    const idx = parseInt(dragState.el.dataset.index,10);
-    if(!isNaN(idx)){
-      const arr = getStored();
-      arr[idx].left = dragState.el.style.left;
-      arr[idx].top = dragState.el.style.top;
-      arr[idx].video = dragState.el.dataset.video || arr[idx].video || '';
-      setStored(arr);
-      renderStored();
-    }
   }
-  dragState.dragging = false;
-  dragState.el = null;
-});
 
-// add new point (centered on map)
-addPointBtn.addEventListener('click', ()=>{
-  // default at center
-  const rect = mapImg.getBoundingClientRect();
-  const centerX = rect.left + rect.width/2;
-  const centerY = rect.top + rect.height/2;
-  const snapped = snapToGrid(centerX, centerY);
-  const pct = pxToPercent(snapped.x, snapped.y);
-  const arr = getStored();
-  arr.push({ type: typeSelect.value, left: pct.left, top: pct.top, video: videoInput.value || '' });
-  setStored(arr);
-  renderStored();
-});
-
-// save button (explicit)
-saveBtn.addEventListener('click', ()=>{
-  // If user has selected a highlighted dot (edit), update it
-  const editEl = document.querySelector('.draggable-dot[data-edit="1"]');
-  if(editEl){
-    const idx = parseInt(editEl.dataset.index,10);
-    const arr = getStored();
-    arr[idx].type = typeSelect.value;
-    arr[idx].video = videoInput.value || '';
-    setStored(arr);
-    editEl.dataset.edit = '0';
-    editEl.style.outline = '';
-    renderStored();
-    alert('Seçili nokta güncellendi ve kaydedildi.');
-    return;
-  }
-  alert('Değişiklikler kaydedildi.');
-});
-
-// export JSON
-exportBtn.addEventListener('click', ()=>{
-  const arr = getStored();
-  const blob = new Blob([JSON.stringify(arr,null,2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'sandstone_points.json';
-  a.click(); URL.revokeObjectURL(url);
-});
-
-// import JSON
-importBtn.addEventListener('click', ()=> importFile.click());
-importFile.addEventListener('change', (ev)=>{
-  const f = ev.target.files[0];
-  if(!f) return;
-  const reader = new FileReader();
-  reader.onload = (e)=>{
-    try{
-      const parsed = JSON.parse(e.target.result);
-      if(Array.isArray(parsed)){
-        setStored(parsed);
-        renderStored();
-        alert('Import başarılı.');
-      } else alert('Geçersiz JSON formatı.');
-    }catch(err){ alert('JSON okunamadı.'); }
-  };
-  reader.readAsText(f);
-});
-
-// toggle grid visibility
-toggleGridBtn.addEventListener('click', ()=>{
-  const visible = gridOverlay.style.display !== 'none';
-  gridOverlay.style.display = visible ? 'none' : 'block';
-  toggleGridBtn.textContent = visible ? '📐 Grid Göster' : '📐 Grid Gizle';
-});
-
-// initialize: render and make grid size correct
-function initAdmin(){
-  // set CSS custom property for grid size
-  document.documentElement.style.setProperty('--grid-size', gridSize + 'px');
-  renderStored();
-}
-initAdmin();
-
-// click on map to add at clicked snapped location
-document.getElementById('adminMapWrapper').addEventListener('click', (e)=>{
-  if(e.target.id === 'map' || e.target.id === 'gridOverlay'){
-    // ignore clicks on UI elements
-    const snapped = snapToGrid(e.clientX, e.clientY);
-    const pct = pxToPercent(snapped.x, snapped.y);
+  // add new point at snapped center OR clicked location
+  addPointBtn.addEventListener('click', ()=>{
+    const r = rect();
+    const centerX = r.left + r.width/2;
+    const centerY = r.top + r.height/2;
+    const snapped = snapClient(centerX, centerY);
+    const pct = pxToPercentAbs(snapped.x, snapped.y);
     const arr = getStored();
     arr.push({ type: typeSelect.value, left: pct.left, top: pct.top, video: videoInput.value || '' });
     setStored(arr);
     renderStored();
-  }
-});
+  });
 
+  // allow clicking the map to add (snap)
+  document.getElementById('adminMapWrapper').addEventListener('click', (e)=>{
+    // ignore clicks that hit controls
+    const targetId = e.target.id || '';
+    if(targetId === 'map' || targetId === 'gridOverlay'){
+      const snapped = snapClient(e.clientX, e.clientY);
+      const pct = pxToPercentAbs(snapped.x, snapped.y);
+      const arr = getStored();
+      arr.push({ type: typeSelect.value, left: pct.left, top: pct.top, video: videoInput.value || '' });
+      setStored(arr);
+      renderStored();
+    }
+  });
+
+  // save button updates selected edit element if any, otherwise not needed because we save on drag end
+  saveBtn.addEventListener('click', ()=>{
+    const editEl = document.querySelector('.draggable-dot[data-edit="1"]');
+    if(editEl){
+      const idx = parseInt(editEl.dataset.index,10);
+      const arr = getStored();
+      arr[idx].type = typeSelect.value;
+      arr[idx].video = videoInput.value || '';
+      setStored(arr);
+      editEl.dataset.edit = '0';
+      editEl.style.outline = '';
+      renderStored();
+      alert('Seçili nokta güncellendi.');
+      return;
+    }
+    alert('Kaydedildi.');
+  });
+
+  // export/import
+  exportBtn.addEventListener('click', ()=>{
+    const arr = getStored();
+    const blob = new Blob([JSON.stringify(arr,null,2)], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'sandstone_points.json'; a.click(); URL.revokeObjectURL(url);
+  });
+  importBtn.addEventListener('click', ()=> importFile.click());
+  importFile.addEventListener('change', (ev)=>{
+    const f = ev.target.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = (e)=>{
+      try{
+        const parsed = JSON.parse(e.target.result);
+        if(Array.isArray(parsed)){ setStored(parsed); renderStored(); alert('Import başarılı'); }
+        else alert('Geçersiz format.');
+      }catch(err){ alert('JSON okunamadı'); }
+    };
+    r.readAsText(f);
+  });
+
+  // toggle grid overlay
+  toggleGridBtn.addEventListener('click', ()=>{
+    const shown = gridOverlay.style.display !== 'none';
+    gridOverlay.style.display = shown ? 'none' : 'block';
+    toggleGridBtn.textContent = shown ? '📐 Grid Göster' : '📐 Grid Gizle';
+  });
+
+  // right click to prevent context menu on map (optional)
+  document.getElementById('adminMapWrapper').addEventListener('contextmenu', (e)=> e.preventDefault());
+
+  // re-render when storage changes (other tabs)
+  window.addEventListener('storage', (e)=>{
+    if(e.key === STORAGE_KEY) renderStored();
+  });
+
+  // initial render when image loaded (map size matters)
+  if(mapImg.complete){
+    renderStored();
+  } else {
+    mapImg.addEventListener('load', renderStored);
+  }
+  window.addEventListener('resize', renderStored);
+
+}); // DOMContentLoaded
 </script>
 </body>
 </html>
