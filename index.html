@@ -6,41 +6,48 @@
   <title>Sandstone Lineup</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="theme-dark">
+<body class="dark">
 
 <!-- REKLAM DUVARLARI -->
 <a class="ad-wall left" href="https://www.tiktok.com/@solixx144" target="_blank"></a>
 <a class="ad-wall right" href="https://www.tiktok.com/@solixx144" target="_blank"></a>
 
 <!-- ÜST BAR -->
-<header class="top-bar">
+<div class="top-bar">
   <button id="menuBtn">☰</button>
-  <div class="theme-switch">
+  <div class="themes">
     <button id="lightBtn">☀</button>
     <button id="darkBtn">🌙</button>
   </div>
-</header>
+</div>
 
 <!-- MENÜ -->
-<nav id="sideMenu" class="hidden">
-  <button onclick="setType('smoke')">Smoke</button>
-  <button onclick="setType('flash')">Flash</button>
-  <button onclick="setType('molly')">Molly</button>
-  <button onclick="setType('grenade')">Grenade</button>
-  <button onclick="clearPoints()">Temizle</button>
-</nav>
+<div id="menu" class="menu hidden">
+  <button data-type="smoke">Smoke</button>
+  <button data-type="flash">Flash</button>
+  <button data-type="molly">Molly</button>
+  <button data-type="grenade">Grenade</button>
+  <hr />
+  <button id="lockBtn">Kilitle</button>
+  <button id="clearBtn">Temizle</button>
+</div>
 
 <!-- MAP -->
-<main class="map-area">
+<div class="map-wrapper">
   <img src="map.png" id="map" />
-  <div id="points"></div>
-</main>
 
-<!-- VIDEO POPUP -->
-<div id="videoPopup" class="hidden">
+  <!-- ÖRNEK NOKTALAR -->
+  <div class="dot smoke" style="top:40%;left:45%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+  <div class="dot flash" style="top:55%;left:60%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+  <div class="dot molly" style="top:30%;left:65%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+  <div class="dot grenade" style="top:65%;left:35%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
   <div class="popup-inner">
-    <button onclick="closeVideo()">✖</button>
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+    <button id="closePopup">X</button>
+    <iframe id="video" allowfullscreen></iframe>
   </div>
 </div>
 
