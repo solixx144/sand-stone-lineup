@@ -2,36 +2,31 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel</title>
+<title>Admin – Nokta Düzenleme</title>
 <style>
-body {
-  background: #0b0d14;
-  color: white;
-  font-family: sans-serif;
-}
-button {
-  padding: 10px;
-  margin: 5px;
-}
+body { background:#111; color:white; }
+.point { position:absolute; width:20px;height:20px;border-radius:50%;cursor:move; }
 </style>
 </head>
 <body>
 
-<h2>ADMIN – NOKTA EKLE</h2>
-<button onclick="addDot()">➕ Nokta Ekle</button>
-<button onclick="clearDots()">🧹 Temizle</button>
+<h3>Admin – Noktaları Sürükle</h3>
+
+<div class="point" style="background:red;top:40%;left:50%"></div>
 
 <script>
-function addDot() {
-  const dots = JSON.parse(localStorage.getItem("dots") || "[]");
-  dots.push({ x: 200, y: 200 });
-  localStorage.setItem("dots", JSON.stringify(dots));
-}
+const point = document.querySelector('.point');
+let drag=false;
 
-function clearDots() {
-  localStorage.removeItem("dots");
-}
+point.onmousedown = ()=>drag=true;
+document.onmouseup = ()=>drag=false;
+document.onmousemove = e=>{
+  if(drag){
+    point.style.left = e.clientX+'px';
+    point.style.top = e.clientY+'px';
+    // burada kaydedip ana siteye aktaracaksın (ileride)
+  }
+};
 </script>
-
 </body>
 </html>
