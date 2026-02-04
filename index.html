@@ -2,55 +2,51 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sandstone Lineup</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
 
-<!-- REKLAM DUVARLARI -->
-<a class="ad-wall left" href="https://www.tiktok.com/@solixx144" target="_blank"></a>
-<a class="ad-wall right" href="https://www.tiktok.com/@solixx144" target="_blank"></a>
-
-<!-- ÜST BAR -->
-<div class="top-bar">
-  <button id="menuBtn">☰</button>
-  <div class="themes">
-    <button id="lightBtn">☀</button>
-    <button id="darkBtn">🌙</button>
+  <!-- ÜST BAR -->
+  <div class="top-bar">
+    <div>
+      <button onclick="filterType('smoke')">Smoke</button>
+      <button onclick="filterType('flash')">Flash</button>
+      <button onclick="filterType('molly')">Molly</button>
+      <button onclick="filterType('grenade')">Grenade</button>
+    </div>
+    <div>
+      <button id="lockBtn">🔒 Kilitle</button>
+      <button id="clearBtn">🧹 Temizle</button>
+      <button onclick="toggleTheme()">🌙 / ⭐</button>
+    </div>
   </div>
-</div>
 
-<!-- MENÜ -->
-<div id="menu" class="menu hidden">
-  <button data-type="smoke">Smoke</button>
-  <button data-type="flash">Flash</button>
-  <button data-type="molly">Molly</button>
-  <button data-type="grenade">Grenade</button>
-  <hr />
-  <button id="lockBtn">Kilitle</button>
-  <button id="clearBtn">Temizle</button>
-</div>
+  <!-- REKLAM DUVARLARI -->
+  <div class="ad-wall left"></div>
+  <div class="ad-wall right"></div>
 
-<!-- MAP -->
-<div class="map-wrapper">
-  <img src="map.png" id="map" />
-
-  <!-- ÖRNEK NOKTALAR -->
-  <div class="dot smoke" style="top:40%;left:45%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-  <div class="dot flash" style="top:55%;left:60%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-  <div class="dot molly" style="top:30%;left:65%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-  <div class="dot grenade" style="top:65%;left:35%" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
-</div>
-
-<!-- POPUP -->
-<div id="popup" class="popup hidden">
-  <div class="popup-inner">
-    <button id="closePopup">X</button>
-    <iframe id="video" allowfullscreen></iframe>
+  <!-- HARİTA -->
+  <div class="map-wrapper">
+    <img id="map" src="map.png" alt="Sandstone Map">
+    <div id="points">
+      <!-- ÖRNEK NOKTALAR -->
+      <div class="dot smoke" style="left:40%;top:45%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+      <div class="dot flash" style="left:55%;top:30%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+      <div class="dot molly" style="left:60%;top:60%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+      <div class="dot grenade" style="left:35%;top:65%;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"></div>
+    </div>
   </div>
-</div>
 
-<script src="app.js"></script>
+  <!-- POPUP -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-inner">
+      <button id="closePopup">❌</button>
+      <iframe id="video" src="" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
