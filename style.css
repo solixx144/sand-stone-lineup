@@ -1,39 +1,89 @@
-body {
-  margin: 0;
-  background: #000;
-  color: #fff;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+body{
+  margin:0;
+  background:#0b0b0b;
+  color:#fff;
+  font-family:Arial, sans-serif;
 }
 
-#mapWrapper {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  aspect-ratio: 1 / 1;
-  margin: auto;
+#mapWrapper{
+  position:relative;
+  width:100%;
+  max-width:900px;
+  aspect-ratio:1/1;
+  margin:auto;
 }
 
-#mapImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+#mapImage{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
-#pointsLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
+#pointsLayer{
+  position:absolute;
+  inset:0;
+  z-index:20;
 }
 
-.point {
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  border-radius: 4px;
+.point{
+  position:absolute;
+  width:18px;
+  height:18px;
+  transform:translate(-50%,-50%);
+  border-radius:4px;
+  cursor:pointer;
 }
 
+.point.smoke{background:#9ca3af;}
+.point.flash{background:#fff;}
+.point.molly{background:#ff4d4d;}
+.point.grenade{background:#556b2f;}
+
+#grid{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px);
+  background-size:15px 15px;
+  pointer-events:none;
+  z-index:10;
+}
+
+#adWall,.ad-wall{
+  position:fixed;
+  top:0;
+  width:40px;
+  height:100vh;
+  background:#ffd400;
+  z-index:1;
+}
+.ad-wall.left{left:0;}
+.ad-wall.right{right:0;}
+
+#adminPanel{
+  position:fixed;
+  top:10px;
+  left:10px;
+  z-index:100;
+  background:rgba(0,0,0,.85);
+  padding:10px;
+  border-radius:8px;
+}
+
+#videoModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  z-index:200;
+}
+
+#videoFrame{
+  width:90%;
+  height:90%;
+  margin:5%;
+}
 .point.smoke { background: #9ca3af; }
 .point.flash { background: #fff; border: 2px dashed #fff; }
 .point.molly { background: #ff3b3b; border: 2px solid orange; }
